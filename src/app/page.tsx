@@ -560,9 +560,9 @@ export default function Home() {
             </div>
 
             <div className="flex items-center gap-6 text-sm text-gray-400">
-              <a href="#" className="hover:text-white transition-colors">Privacy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms</a>
-              <a href="#" className="hover:text-white transition-colors">Contact</a>
+              <a href="/privacy" className="hover:text-white transition-colors">Privacy</a>
+              <a href="/terms" className="hover:text-white transition-colors">Terms</a>
+              <a href="/contact" className="hover:text-white transition-colors">Contact</a>
             </div>
 
             <div className="text-sm text-gray-500">
