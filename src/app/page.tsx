@@ -192,9 +192,17 @@ export default function Home() {
               <button className="text-sm text-gray-400 hover:text-white transition-colors">
                 Sign In
               </button>
-              <button className="px-4 py-2 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full text-sm font-medium hover:from-violet-500 hover:to-purple-500 transition-all">
-                Get Started
-              </button>
+              <button
+              onClick={() => {
+                handleClearForm();
+                setTimeout(() => {
+                  document.getElementById('generator')?.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+              }}
+              className="px-4 py-2 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full text-sm font-medium hover:from-violet-500 hover:to-purple-500 transition-all"
+            >
+              Get Started
+            </button>
             </div>
           </div>
         </div>
