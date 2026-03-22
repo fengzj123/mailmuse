@@ -1,9 +1,11 @@
 import OpenAI from 'openai';
 
-const client = new OpenAI({
-  baseURL: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
-  apiKey: process.env.DASHSCOPE_API_KEY,
-});
+function getClient() {
+  return new OpenAI({
+    baseURL: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
+    apiKey: process.env.DASHSCOPE_API_KEY,
+  });
+}
 
 export async function generateEmail(params: {
   scenario: string;
@@ -43,6 +45,7 @@ Requirements:
 
 Output ONLY the email with subject line, no explanations or additional text.`;
 
+  const client = getClient();
   const response = await client.chat.completions.create({
     model: 'qwen-plus',
     messages: [
