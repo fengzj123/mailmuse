@@ -117,6 +117,18 @@ export default function Home() {
     setIsDemo(false);
   };
 
+  const handleClearForm = () => {
+    setScenario('job-application');
+    setRecipientRole('');
+    setSenderBackground('');
+    setEmailPurpose('');
+    setTone('formal');
+    setLanguage('English');
+    setGeneratedEmail('');
+    setIsDemo(false);
+    setError('');
+  };
+
   const handleGenerate = async () => {
     if (!recipientRole || !emailPurpose) {
       setError('Please fill in recipient and email purpose');
@@ -212,7 +224,12 @@ export default function Home() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => document.getElementById('generator')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => {
+                handleClearForm();
+                setTimeout(() => {
+                  document.getElementById('generator')?.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+              }}
               className="px-8 py-4 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full font-semibold hover:from-violet-500 hover:to-purple-500 transition-all shadow-lg shadow-violet-500/25"
             >
               Try It Free
