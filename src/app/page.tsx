@@ -55,6 +55,35 @@ const features = [
   },
 ];
 
+// Demo preset data
+const demoData = {
+  scenario: 'job-application',
+  recipientRole: 'Hiring Manager at Google',
+  senderBackground: 'Senior Software Engineer with 5 years of experience at tech companies, specializing in distributed systems and cloud architecture',
+  emailPurpose: 'Apply for the Senior Software Engineer position. Highlight my experience leading backend infrastructure projects and mentoring junior engineers. Mention my expertise in GCP, Kubernetes, and microservices.',
+  tone: 'formal',
+  language: 'English',
+};
+
+const demoResult = `Subject: Application for Senior Software Engineer Position
+
+Dear Hiring Manager,
+
+I am writing to express my strong interest in the Senior Software Engineer position at Google. With five years of experience building scalable distributed systems and cloud infrastructure at leading tech companies, I am excited about the opportunity to contribute to Google's engineering team.
+
+In my current role at a fast-growing SaaS company, I led the backend infrastructure team that scaled our platform from 10,000 to over 1 million daily active users. I have hands-on expertise with Google Cloud Platform, Kubernetes, and microservices architecture - technologies that align closely with your team's work.
+
+What draws me to Google is your commitment to technical excellence and impactful products that billions of people rely on daily. I am particularly interested in your work on large-scale data processing systems and would welcome the opportunity to bring my experience in building resilient, high-performance backend services to your team.
+
+I have attached my resume for your review and would welcome the opportunity to discuss how my skills and experience could contribute to Google's continued success.
+
+Thank you for your time and consideration.
+
+Best regards,
+Michael Chen
+Senior Software Engineer
+michael.chen@email.com | linkedin.com/in/michaelchen`;
+
 export default function Home() {
   const [scenario, setScenario] = useState('job-application');
   const [recipientRole, setRecipientRole] = useState('');
@@ -66,6 +95,27 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState('');
+  const [isDemo, setIsDemo] = useState(false);
+
+  const handleWatchDemo = () => {
+    setScenario(demoData.scenario);
+    setRecipientRole(demoData.recipientRole);
+    setSenderBackground(demoData.senderBackground);
+    setEmailPurpose(demoData.emailPurpose);
+    setTone(demoData.tone);
+    setLanguage(demoData.language);
+    setGeneratedEmail(demoResult);
+    setIsDemo(true);
+
+    // Scroll to generator after a short delay
+    setTimeout(() => {
+      document.getElementById('generator')?.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+
+  const handleDemoModeExit = () => {
+    setIsDemo(false);
+  };
 
   const handleGenerate = async () => {
     if (!recipientRole || !emailPurpose) {
@@ -168,7 +218,7 @@ export default function Home() {
               Try It Free
             </button>
             <button
-              onClick={() => document.getElementById('generator')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={handleWatchDemo}
               className="px-8 py-4 bg-white/5 border border-white/10 rounded-full font-semibold hover:bg-white/10 transition-all"
             >
               Watch Demo
@@ -215,7 +265,7 @@ export default function Home() {
                   <label className="text-sm font-medium text-gray-300">Scenario</label>
                   <select
                     value={scenario}
-                    onChange={(e) => setScenario(e.target.value)}
+                    onChange={(e) => { setScenario(e.target.value); handleDemoModeExit(); }}
                     className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none appearance-none cursor-pointer"
                   >
                     {scenarios.map((s) => (
@@ -230,7 +280,7 @@ export default function Home() {
                   <label className="text-sm font-medium text-gray-300">Tone</label>
                   <select
                     value={tone}
-                    onChange={(e) => setTone(e.target.value)}
+                    onChange={(e) => { setTone(e.target.value); handleDemoModeExit(); }}
                     className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none appearance-none cursor-pointer"
                   >
                     {tones.map((t) => (
@@ -245,7 +295,7 @@ export default function Home() {
                   <label className="text-sm font-medium text-gray-300">Language</label>
                   <select
                     value={language}
-                    onChange={(e) => setLanguage(e.target.value)}
+                    onChange={(e) => { setLanguage(e.target.value); handleDemoModeExit(); }}
                     className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none appearance-none cursor-pointer"
                   >
                     {languages.map((l) => (
@@ -263,7 +313,7 @@ export default function Home() {
                 <input
                   type="text"
                   value={recipientRole}
-                  onChange={(e) => setRecipientRole(e.target.value)}
+                  onChange={(e) => { setRecipientRole(e.target.value); handleDemoModeExit(); }}
                   placeholder="e.g., Hiring Manager at Google"
                   className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none placeholder:text-gray-500"
                 />
@@ -276,7 +326,7 @@ export default function Home() {
                 </label>
                 <textarea
                   value={senderBackground}
-                  onChange={(e) => setSenderBackground(e.target.value)}
+                  onChange={(e) => { setSenderBackground(e.target.value); handleDemoModeExit(); }}
                   placeholder="Briefly describe yourself or your company..."
                   rows={2}
                   className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none placeholder:text-gray-500 resize-none"
@@ -288,7 +338,7 @@ export default function Home() {
                 <label className="text-sm font-medium text-gray-300">Email Purpose</label>
                 <textarea
                   value={emailPurpose}
-                  onChange={(e) => setEmailPurpose(e.target.value)}
+                  onChange={(e) => { setEmailPurpose(e.target.value); handleDemoModeExit(); }}
                   placeholder="What do you want to say? Include key points you want to cover..."
                   rows={3}
                   className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none placeholder:text-gray-500 resize-none"
