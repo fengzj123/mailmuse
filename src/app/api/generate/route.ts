@@ -1,6 +1,8 @@
 import { generateEmail } from '@/lib/qwen';
 import { NextRequest, NextResponse } from 'next/server';
 
+export const runtime = 'edge';
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
