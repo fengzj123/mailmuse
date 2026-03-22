@@ -167,7 +167,10 @@ export default function Home() {
             >
               Try It Free
             </button>
-            <button className="px-8 py-4 bg-white/5 border border-white/10 rounded-full font-semibold hover:bg-white/10 transition-all">
+            <button
+              onClick={() => document.getElementById('generator')?.scrollIntoView({ behavior: 'smooth' })}
+              className="px-8 py-4 bg-white/5 border border-white/10 rounded-full font-semibold hover:bg-white/10 transition-all"
+            >
               Watch Demo
             </button>
           </div>
