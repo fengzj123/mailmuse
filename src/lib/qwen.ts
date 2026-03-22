@@ -1,9 +1,15 @@
 import OpenAI from 'openai';
 
 function getClient() {
+  const apiKey = process.env.DASHSCOPE_API_KEY;
+
+  if (!apiKey) {
+    throw new Error('DASHSCOPE_API_KEY environment variable is not set');
+  }
+
   return new OpenAI({
     baseURL: 'https://dashscope.aliyuncs.com/compatible-mode/v1',
-    apiKey: process.env.DASHSCOPE_API_KEY,
+    apiKey: apiKey,
   });
 }
 
@@ -46,21 +52,27 @@ Requirements:
 Output ONLY the email with subject line, no explanations or additional text.`;
 
   const client = getClient();
-  const response = await client.chat.completions.create({
-    model: 'qwen-plus',
-    messages: [
-      {
-        role: 'system',
-        content: 'You are a professional email writing assistant.',
-      },
-      {
-        role: 'user',
-        content: prompt,
-      },
-    ],
-    temperature: 0.7,
-    max_tokens: 1000,
-  });
 
-  return response.choices[0].message.content || '';
+  try {
+    const response = await client.chat.completions.create({
+      model: 'qwen-plus',
+      messages: [
+        {
+          role: 'system',
+          content: 'You are a professional email writing assistant.',
+        },
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
+      temperature: 0.7,
+      max_tokens: 1000,
+    });
+
+    return response.choices[0].message.content || '';
+  } catch (error) {
+    console.error('OpenAI API error:', error);
+    throw error;
+  }
 }
