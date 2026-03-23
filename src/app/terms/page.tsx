@@ -1,6 +1,6 @@
 export const metadata = {
-  title: 'Terms of Service - MailMuse',
-  description: 'Terms of Service for MailMuse AI Email Writer',
+  title: 'Terms of Service - MailCraftUs',
+  description: 'Terms of Service for MailCraftUs AI Email Writer',
 };
 
 export default function TermsPage() {
@@ -14,14 +14,14 @@ export default function TermsPage() {
           <section>
             <h2 className="text-xl font-semibold text-white mb-3">Agreement to Terms</h2>
             <p>
-              By accessing or using MailMuse, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our service.
+              By accessing or using MailCraftUs, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our service.
             </p>
           </section>
 
           <section>
             <h2 className="text-xl font-semibold text-white mb-3">Description of Service</h2>
             <p>
-              MailMuse provides an AI-powered email writing assistant. Our service generates professional emails based on user-provided information and AI processing.
+              MailCraftUs provides an AI-powered email writing assistant. Our service generates professional emails based on user-provided information and AI processing.
             </p>
           </section>
 
@@ -39,7 +39,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-xl font-semibold text-white mb-3">Intellectual Property</h2>
             <p>
-              The service, including its design, text, graphics, and software, is owned by MailMuse and protected by intellectual property laws. You retain ownership of content you create using our service.
+              The service, including its design, text, graphics, and software, is owned by MailCraftUs and protected by intellectual property laws. You retain ownership of content you create using our service.
             </p>
           </section>
 
@@ -53,7 +53,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-xl font-semibold text-white mb-3">Limitation of Liability</h2>
             <p>
-              To the maximum extent permitted by law, MailMuse shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of the service.
+              To the maximum extent permitted by law, MailCraftUs shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of the service.
             </p>
           </section>
 
@@ -82,8 +82,8 @@ export default function TermsPage() {
             <h2 className="text-xl font-semibold text-white mb-3">Contact Information</h2>
             <p>
               For questions about these Terms, please contact us at{' '}
-              <a href="mailto:legal@mailmuse.com" className="text-violet-400 hover:text-violet-300">
-                legal@mailmuse.com
+              <a href="mailto:legal@MailCraftUs.com" className="text-violet-400 hover:text-violet-300">
+                legal@MailCraftUs.com
               </a>
             </p>
           </section>

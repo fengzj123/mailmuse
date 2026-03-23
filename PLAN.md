@@ -17,7 +17,7 @@
 ## 二、产品定位
 
 **产品名称（备选）**
-- MailMuse
+- MailCraftUs
 - WriteMail AI
 - ProseMail
 

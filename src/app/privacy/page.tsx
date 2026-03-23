@@ -1,6 +1,6 @@
 export const metadata = {
-  title: 'Privacy Policy - MailMuse',
-  description: 'Privacy Policy for MailMuse AI Email Writer',
+  title: 'Privacy Policy - MailCraftUs',
+  description: 'Privacy Policy for MailCraftUs AI Email Writer',
 };
 
 export default function PrivacyPage() {
@@ -64,8 +64,8 @@ export default function PrivacyPage() {
             <h2 className="text-xl font-semibold text-white mb-3">Contact Us</h2>
             <p>
               If you have questions about this Privacy Policy, please contact us at{' '}
-              <a href="mailto:privacy@mailmuse.com" className="text-violet-400 hover:text-violet-300">
-                privacy@mailmuse.com
+              <a href="mailto:privacy@MailCraftUs.com" className="text-violet-400 hover:text-violet-300">
+                privacy@MailCraftUs.com
               </a>
             </p>
           </section>

@@ -186,7 +186,7 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
-              <span className="text-xl font-bold">MailMuse</span>
+              <span className="text-xl font-bold">MailCraftUs</span>
             </div>
             <div className="flex items-center gap-4">
               <button className="text-sm text-gray-400 hover:text-white transition-colors">
@@ -556,7 +556,7 @@ export default function Home() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
-              <span className="font-bold">MailMuse</span>
+              <span className="font-bold">MailCraftUs</span>
             </div>
 
             <div className="flex items-center gap-6 text-sm text-gray-400">
@@ -566,7 +566,7 @@ export default function Home() {
             </div>
 
             <div className="text-sm text-gray-500">
-              © 2026 MailMuse. All rights reserved.
+              © 2026 MailCraftUs. All rights reserved.
             </div>
           </div>
         </div>

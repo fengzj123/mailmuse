@@ -1,8 +1,8 @@
 import ContactForm from './ContactForm';
 
 export const metadata = {
-  title: 'Contact Us - MailMuse',
-  description: 'Contact MailMuse AI Email Writer',
+  title: 'Contact Us - MailCraftUs',
+  description: 'Contact MailCraftUs AI Email Writer',
 };
 
 export default function ContactPage() {
@@ -21,8 +21,8 @@ export default function ContactPage() {
           <div className="space-y-3 text-gray-400">
             <p>
               <span className="text-gray-300">Email:</span>{' '}
-              <a href="mailto:support@mailmuse.com" className="text-violet-400 hover:text-violet-300">
-                support@mailmuse.com
+              <a href="mailto:support@MailCraftUs.com" className="text-violet-400 hover:text-violet-300">
+                support@MailCraftUs.com
               </a>
             </p>
             <p>

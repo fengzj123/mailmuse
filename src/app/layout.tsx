@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MailMuse - AI Email Writer | Write Professional Emails in Seconds",
+  title: "MailCraftUs - AI Email Writer | Write Professional Emails in Seconds",
   description: "AI-powered email writing tool. Generate professional emails for job applications, sales outreach, follow-ups, and more. Free to start.",
 };
 
