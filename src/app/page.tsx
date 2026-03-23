@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { useUsageTracker } from '@/lib/useUsageTracker';
 
 const scenarios = [
   { value: 'job-application', label: 'Job Application' },
@@ -87,8 +88,18 @@ Senior Software Engineer
 michael.chen@email.com | linkedin.com/in/michaelchen`;
 
 export default function Home() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const router = useRouter();
+  const isLoggedIn = !!session;
+  const {
+    remaining,
+    dailyLimit,
+    showLimitModal,
+    checkAndIncrement,
+    closeLimitModal,
+    refresh,
+  } = useUsageTracker(isLoggedIn);
+
   const [scenario, setScenario] = useState('job-application');
   const [recipientRole, setRecipientRole] = useState('');
   const [senderBackground, setSenderBackground] = useState('');
@@ -139,6 +150,11 @@ export default function Home() {
       return;
     }
 
+    // Check usage limit
+    if (!checkAndIncrement()) {
+      return; // Modal will be shown by the hook
+    }
+
     setIsLoading(true);
     setError('');
     setGeneratedEmail('');
@@ -164,6 +180,7 @@ export default function Home() {
       }
 
       setGeneratedEmail(data.email);
+      refresh(); // Update remaining count
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
@@ -193,9 +210,7 @@ export default function Home() {
               <span className="text-xl font-bold">MailCraftUs</span>
             </div>
             <div className="flex items-center gap-4">
-              {status === 'loading' ? (
-                <span className="text-sm text-gray-400">Loading...</span>
-              ) : session ? (
+              {session ? (
                 <div className="flex items-center gap-3">
                   <span className="text-sm text-gray-300">
                     {session.user?.name || session.user?.email}
@@ -423,6 +438,21 @@ export default function Home() {
                   </>
                 )}
               </button>
+
+              {/* Usage Indicator */}
+              <div className="flex items-center justify-center gap-2 mt-3 text-sm text-gray-400">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>
+                  {remaining} / {dailyLimit} emails remaining today
+                </span>
+                {!isLoggedIn && (
+                  <span className="text-violet-400">
+                    <a href="/auth/signin" className="hover:underline">Sign in</a> for 10/day
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 
@@ -568,6 +598,56 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Limit Reached Modal */}
+      {showLimitModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-6">
+          <div className="max-w-md w-full bg-gradient-to-b from-[#1a1a2e] to-[#0f0f23] border border-white/10 rounded-3xl p-8">
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-orange-500/20 flex items-center justify-center">
+                <svg className="w-8 h-8 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold mb-2">Daily Limit Reached</h2>
+              <p className="text-gray-400">
+                You&apos;ve used all {dailyLimit} free emails for today.{' '}
+                {isLoggedIn ? (
+                  <>Upgrade to Pro for unlimited emails.</>
+                ) : (
+                  <>Sign in to get 10 emails per day, or upgrade to Pro for unlimited.</>
+                )}
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              {isLoggedIn ? (
+                <button className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all font-medium">
+                  Upgrade to Pro - $12/month
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={() => router.push('/auth/signin')}
+                    className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all font-medium"
+                  >
+                    Sign in for 10 emails/day
+                  </button>
+                  <button className="w-full py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all font-medium">
+                    Upgrade to Pro - $12/month
+                  </button>
+                </>
+              )}
+              <button
+                onClick={closeLimitModal}
+                className="w-full py-3 text-gray-400 hover:text-white transition-colors"
+              >
+                Maybe Later
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="py-12 px-6 border-t border-white/5">
