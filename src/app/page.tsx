@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { useSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const scenarios = [
   { value: 'job-application', label: 'Job Application' },
@@ -85,6 +87,8 @@ Senior Software Engineer
 michael.chen@email.com | linkedin.com/in/michaelchen`;
 
 export default function Home() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [scenario, setScenario] = useState('job-application');
   const [recipientRole, setRecipientRole] = useState('');
   const [senderBackground, setSenderBackground] = useState('');
@@ -189,9 +193,28 @@ export default function Home() {
               <span className="text-xl font-bold">MailCraftUs</span>
             </div>
             <div className="flex items-center gap-4">
-              <button className="text-sm text-gray-400 hover:text-white transition-colors">
-                Sign In
-              </button>
+              {status === 'loading' ? (
+                <span className="text-sm text-gray-400">Loading...</span>
+              ) : session ? (
+                <div className="flex items-center gap-3">
+                  <span className="text-sm text-gray-300">
+                    {session.user?.name || session.user?.email}
+                  </span>
+                  <button
+                    onClick={() => signOut()}
+                    className="text-sm text-gray-400 hover:text-white transition-colors"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => router.push('/auth/signin')}
+                  className="text-sm text-gray-400 hover:text-white transition-colors"
+                >
+                  Sign In
+                </button>
+              )}
               <button
               onClick={() => {
                 handleClearForm();
