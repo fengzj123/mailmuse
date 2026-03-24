@@ -201,52 +201,335 @@ export default function Home() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  // Logged-in: simplified tool-only layout
+  if (isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-[#0f0f23] text-white">
+        {/* Simplified Navigation for logged-in users */}
+        <nav className="border-b border-white/10 backdrop-blur-sm bg-[#0f0f23]/80 sticky top-0 z-50">
+          <div className="max-w-6xl mx-auto px-6 py-4">
+            <div className="flex items-center justify-between">
+              <a href="/" className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <span className="text-xl font-bold">MailCraftUs</span>
+              </a>
+              <div className="flex items-center gap-4">
+                <span className="text-sm text-gray-300">
+                  {remaining} / {dailyLimit} remaining
+                </span>
+                <a
+                  href="/pricing"
+                  className="text-sm text-gray-400 hover:text-white transition-colors"
+                >
+                  Pricing
+                </a>
+                <button
+                  onClick={() => signOut()}
+                  className="text-sm text-gray-400 hover:text-white transition-colors"
+                >
+                  Sign Out
+                </button>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        {/* Generator Section - Only show for logged-in users */}
+        <section id="generator" className="py-16 px-6">
+          <div className="max-w-4xl mx-auto">
+            {/* Main Generator Card */}
+            <div className="rounded-3xl bg-gradient-to-b from-white/10 to-white/5 border border-white/10 p-8 backdrop-blur-sm">
+              {/* Card Header */}
+              <div className="text-center mb-8">
+                <h2 className="text-2xl font-bold mb-2">Email Generator</h2>
+                <p className="text-gray-400 text-sm">Fill in the details below and let AI do the rest</p>
+              </div>
+
+              <div className="space-y-6">
+                {/* Row 1: Scenario, Tone, Language */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-300">Scenario</label>
+                    <select
+                      value={scenario}
+                      onChange={(e) => { setScenario(e.target.value); handleDemoModeExit(); }}
+                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none appearance-none cursor-pointer"
+                    >
+                      {scenarios.map((s) => (
+                        <option key={s.value} value={s.value} className="bg-[#1a1a2e]">
+                          {s.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-300">Tone</label>
+                    <select
+                      value={tone}
+                      onChange={(e) => { setTone(e.target.value); handleDemoModeExit(); }}
+                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none appearance-none cursor-pointer"
+                    >
+                      {tones.map((t) => (
+                        <option key={t.value} value={t.value} className="bg-[#1a1a2e]">
+                          {t.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-gray-300">Language</label>
+                    <select
+                      value={language}
+                      onChange={(e) => { setLanguage(e.target.value); handleDemoModeExit(); }}
+                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none appearance-none cursor-pointer"
+                    >
+                      {languages.map((l) => (
+                        <option key={l.value} value={l.value} className="bg-[#1a1a2e]">
+                          {l.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Row 2: Recipient */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-300">Recipient</label>
+                  <input
+                    type="text"
+                    value={recipientRole}
+                    onChange={(e) => { setRecipientRole(e.target.value); handleDemoModeExit(); }}
+                    placeholder="e.g., Hiring Manager at Google"
+                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none placeholder:text-gray-500"
+                  />
+                </div>
+
+                {/* Row 3: Sender Background */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-300">
+                    Your Background <span className="text-gray-500">(Optional)</span>
+                  </label>
+                  <textarea
+                    value={senderBackground}
+                    onChange={(e) => { setSenderBackground(e.target.value); handleDemoModeExit(); }}
+                    placeholder="Briefly describe yourself or your company..."
+                    rows={2}
+                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none placeholder:text-gray-500 resize-none"
+                  />
+                </div>
+
+                {/* Row 4: Email Purpose */}
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-300">Email Purpose</label>
+                  <textarea
+                    value={emailPurpose}
+                    onChange={(e) => { setEmailPurpose(e.target.value); handleDemoModeExit(); }}
+                    placeholder="What do you want to say? Include key points you want to cover..."
+                    rows={3}
+                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none placeholder:text-gray-500 resize-none"
+                  />
+                </div>
+
+                {/* Error Message */}
+                {error && (
+                  <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+                    {error}
+                  </div>
+                )}
+
+                {/* Generate Button */}
+                <button
+                  onClick={handleGenerate}
+                  disabled={isLoading}
+                  className="w-full py-4 px-6 bg-gradient-to-r from-violet-600 to-purple-600 rounded-xl font-semibold hover:from-violet-500 hover:to-purple-500 disabled:from-gray-600 disabled:to-gray-600 transition-all shadow-lg shadow-violet-500/25 flex items-center justify-center gap-2"
+                >
+                  {isLoading ? (
+                    <>
+                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      Generating...
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                      Generate Email
+                    </>
+                  )}
+                </button>
+
+                {/* Usage Indicator */}
+                <div className="flex items-center justify-center gap-2 mt-3 text-sm text-gray-400">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span>
+                    {remaining} / {dailyLimit} emails remaining today
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Generated Email Card */}
+            {generatedEmail && (
+              <div className="mt-6 rounded-3xl bg-gradient-to-b from-white/10 to-white/5 border border-white/10 p-8 backdrop-blur-sm">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center">
+                      <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">Generated Email</h3>
+                      <p className="text-sm text-gray-400">AI-crafted professional email</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleCopy}
+                    className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all flex items-center gap-2 text-sm"
+                  >
+                    {copied ? (
+                      <>
+                        <svg className="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                        Copied!
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                        </svg>
+                        Copy
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                <div className="rounded-2xl bg-black/20 p-6 whitespace-pre-wrap text-gray-300 leading-relaxed font-mono text-sm">
+                  {generatedEmail}
+                </div>
+
+                <div className="mt-6 flex gap-3">
+                  <button
+                    onClick={handleGenerate}
+                    disabled={isLoading}
+                    className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all text-sm flex items-center gap-2"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Regenerate
+                  </button>
+                  <button
+                    onClick={() => {
+                      const subject = generatedEmail.match(/^Subject: (.+)$/m)?.[1] || '';
+                      const body = generatedEmail.replace(/^Subject: .+$/m, '').trim();
+                      const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                      window.location.href = mailtoLink;
+                    }}
+                    className="px-4 py-2 rounded-xl bg-green-600/20 text-green-400 hover:bg-green-600/30 transition-all text-sm flex items-center gap-2"
+                  >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    Open in Email Client
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* Limit Reached Modal */}
+        {showLimitModal && (
+          <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-6">
+            <div className="max-w-md w-full bg-gradient-to-b from-[#1a1a2e] to-[#0f0f23] border border-white/10 rounded-3xl p-8">
+              <div className="text-center mb-6">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-orange-500/20 flex items-center justify-center">
+                  <svg className="w-8 h-8 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                </div>
+                <h2 className="text-2xl font-bold mb-2">Daily Limit Reached</h2>
+                <p className="text-gray-400">
+                  You&apos;ve used all {dailyLimit} free emails for today. Upgrade to Pro for unlimited emails.
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <a
+                  href="/pricing"
+                  className="block w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all font-medium text-center"
+                >
+                  Upgrade to Pro - $9/month
+                </a>
+                <button
+                  onClick={closeLimitModal}
+                  className="w-full py-3 text-gray-400 hover:text-white transition-colors"
+                >
+                  Maybe Later
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Simplified Footer for logged-in users */}
+        <footer className="py-8 px-6 border-t border-white/5">
+          <div className="max-w-6xl mx-auto text-center">
+            <div className="text-sm text-gray-500">
+              © 2026 MailCraftUs. All rights reserved.
+            </div>
+          </div>
+        </footer>
+      </div>
+    );
+  }
+
+  // Guest: full landing page
   return (
     <div className="min-h-screen bg-[#0f0f23] text-white">
       {/* Navigation */}
       <nav className="border-b border-white/10 backdrop-blur-sm bg-[#0f0f23]/80 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
+            <a href="/" className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
               <span className="text-xl font-bold">MailCraftUs</span>
-            </div>
+            </a>
             <div className="flex items-center gap-4">
-              {session ? (
-                <div className="flex items-center gap-3">
-                  <span className="text-sm text-gray-300">
-                    {session.user?.name || session.user?.email}
-                  </span>
-                  <button
-                    onClick={() => signOut()}
-                    className="text-sm text-gray-400 hover:text-white transition-colors"
-                  >
-                    Sign Out
-                  </button>
-                </div>
-              ) : (
-                <button
-                  onClick={() => router.push('/auth/signin')}
-                  className="text-sm text-gray-400 hover:text-white transition-colors"
-                >
-                  Sign In
-                </button>
-              )}
               <button
-              onClick={() => {
-                handleClearForm();
-                setTimeout(() => {
-                  document.getElementById('generator')?.scrollIntoView({ behavior: 'smooth' });
-                }, 100);
-              }}
-              className="px-4 py-2 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full text-sm font-medium hover:from-violet-500 hover:to-purple-500 transition-all"
-            >
-              Get Started
-            </button>
+                onClick={() => router.push('/auth/signin')}
+                className="text-sm text-gray-400 hover:text-white transition-colors"
+              >
+                Sign In
+              </button>
+              <button
+                onClick={() => {
+                  handleClearForm();
+                  setTimeout(() => {
+                    document.getElementById('generator')?.scrollIntoView({ behavior: 'smooth' });
+                  }, 100);
+                }}
+                className="px-4 py-2 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full text-sm font-medium hover:from-violet-500 hover:to-purple-500 transition-all"
+              >
+                Get Started
+              </button>
             </div>
           </div>
         </div>
@@ -447,20 +730,9 @@ export default function Home() {
 
               {/* Usage Indicator */}
               <div className="flex items-center justify-center gap-2 mt-3 text-sm text-gray-400">
-                {isLoggedIn ? (
-                  <>
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>
-                      {remaining} / {dailyLimit} emails remaining today
-                    </span>
-                  </>
-                ) : (
-                  <span className="text-violet-400">
-                    <a href="/auth/signin" className="hover:underline">Sign in</a> to start using
-                  </span>
-                )}
+                <span className="text-violet-400">
+                  <a href="/auth/signin" className="hover:underline">Sign in</a> to start using
+                </span>
               </div>
             </div>
           </div>
@@ -537,7 +809,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Pricing Preview */}
+      {/* Pricing Preview - Links to full pricing page */}
       <section className="py-20 px-6 border-t border-white/5">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">Simple, Transparent Pricing</h2>
@@ -553,7 +825,7 @@ export default function Home() {
                   <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
-                  3 emails per day
+                  5 emails per day
                 </li>
                 <li className="flex items-center gap-3 text-gray-300">
                   <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -601,78 +873,32 @@ export default function Home() {
                   Priority support
                 </li>
               </ul>
-              <button className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all font-medium">
+              <a
+                href="/pricing"
+                className="block w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all font-medium text-center"
+              >
                 Upgrade to Pro
-              </button>
+              </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Limit Reached Modal */}
-      {showLimitModal && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-6">
-          <div className="max-w-md w-full bg-gradient-to-b from-[#1a1a2e] to-[#0f0f23] border border-white/10 rounded-3xl p-8">
-            <div className="text-center mb-6">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-orange-500/20 flex items-center justify-center">
-                <svg className="w-8 h-8 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-              </div>
-              <h2 className="text-2xl font-bold mb-2">Daily Limit Reached</h2>
-              <p className="text-gray-400">
-                You&apos;ve used all {dailyLimit} free emails for today.{' '}
-                {isLoggedIn ? (
-                  <>Upgrade to Pro for unlimited emails.</>
-                ) : (
-                  <>Sign in to get 5 emails per day, or upgrade to Pro for unlimited.</>
-                )}
-              </p>
-            </div>
-
-            <div className="space-y-3">
-              {isLoggedIn ? (
-                <button className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all font-medium">
-                  Upgrade to Pro - $9/month
-                </button>
-              ) : (
-                <>
-                  <button
-                    onClick={() => router.push('/auth/signin')}
-                    className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all font-medium"
-                  >
-                    Sign in to start
-                  </button>
-                  <button className="w-full py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all font-medium">
-                    Upgrade to Pro - $9/month
-                  </button>
-                </>
-              )}
-              <button
-                onClick={closeLimitModal}
-                className="w-full py-3 text-gray-400 hover:text-white transition-colors"
-              >
-                Maybe Later
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Footer */}
       <footer className="py-12 px-6 border-t border-white/5">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="flex items-center gap-2">
+            <a href="/" className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
               <span className="font-bold">MailCraftUs</span>
-            </div>
+            </a>
 
             <div className="flex items-center gap-6 text-sm text-gray-400">
+              <a href="/pricing" className="hover:text-white transition-colors">Pricing</a>
               <a href="/privacy" className="hover:text-white transition-colors">Privacy</a>
               <a href="/terms" className="hover:text-white transition-colors">Terms</a>
               <a href="/contact" className="hover:text-white transition-colors">Contact</a>
