@@ -105,26 +105,31 @@ export async function createMonthlyPlan(productId: string, price: string): Promi
       product_id: productId,
       name: 'MailCraftUs Pro Monthly',
       status: 'ACTIVE',
-      pricingSchemes: {
-        pricingScheme: {
-          fixedPrice: {
-            value: price,
-            currency_code: 'USD',
-          },
-        },
-      },
-      billingCycles: [
+      billing_cycles: [
         {
-          frequency: { intervalUnit: 'MONTH', intervalCount: 1 },
-          tenureType: 'REGULAR',
+          frequency: {
+            interval_unit: 'MONTH',
+            interval_count: 1,
+          },
+          tenure_type: 'REGULAR',
           sequence: 1,
-          totalCycles: 0, // 0 = infinite
+          total_cycles: 0,
         },
       ],
-      paymentPreferences: {
-        autoBillOutstanding: true,
-        setupFeeFailureAction: 'CONTINUE',
-        paymentFailureThreshold: 3,
+      payment_preferences: {
+        auto_bill_outstanding: true,
+        setup_fee: {
+          value: '0',
+          currency_code: 'USD',
+        },
+        setup_fee_failure_action: 'CONTINUE',
+        payment_failure_threshold: 3,
+      },
+      pricing_scheme: {
+        fixed_price: {
+          value: price,
+          currency_code: 'USD',
+        },
       },
     }),
   });
@@ -152,26 +157,31 @@ export async function createYearlyPlan(productId: string, price: string): Promis
       product_id: productId,
       name: 'MailCraftUs Pro Yearly',
       status: 'ACTIVE',
-      pricingSchemes: {
-        pricingScheme: {
-          fixedPrice: {
-            value: price,
-            currency_code: 'USD',
-          },
-        },
-      },
-      billingCycles: [
+      billing_cycles: [
         {
-          frequency: { intervalUnit: 'YEAR', intervalCount: 1 },
-          tenureType: 'REGULAR',
+          frequency: {
+            interval_unit: 'YEAR',
+            interval_count: 1,
+          },
+          tenure_type: 'REGULAR',
           sequence: 1,
-          totalCycles: 0, // 0 = infinite
+          total_cycles: 0,
         },
       ],
-      paymentPreferences: {
-        autoBillOutstanding: true,
-        setupFeeFailureAction: 'CONTINUE',
-        paymentFailureThreshold: 3,
+      payment_preferences: {
+        auto_bill_outstanding: true,
+        setup_fee: {
+          value: '0',
+          currency_code: 'USD',
+        },
+        setup_fee_failure_action: 'CONTINUE',
+        payment_failure_threshold: 3,
+      },
+      pricing_scheme: {
+        fixed_price: {
+          value: price,
+          currency_code: 'USD',
+        },
       },
     }),
   });
