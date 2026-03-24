@@ -1,9 +1,60 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useSession, signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function PricingPage() {
   const { data: session } = useSession();
+  const router = useRouter();
+  const [isPro, setIsPro] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('monthly');
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      checkSubscription();
+    }
+  }, [session]);
+
+  const checkSubscription = async () => {
+    try {
+      const res = await fetch('/api/subscription/check');
+      const data = await res.json();
+      setIsPro(data.isPro);
+    } catch (error) {
+      console.error('Failed to check subscription:', error);
+    }
+  };
+
+  const handleUpgrade = async () => {
+    if (!session) {
+      router.push('/auth/signin?callbackUrl=/pricing');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch('/api/subscription/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ planType: selectedPlan }),
+      });
+
+      const data = await res.json();
+
+      if (data.approvalUrl) {
+        window.location.href = data.approvalUrl;
+      } else {
+        alert('Failed to create subscription. Please try again.');
+      }
+    } catch (error) {
+      console.error('Upgrade error:', error);
+      alert('Failed to start upgrade. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#0f0f23] text-white">
@@ -58,6 +109,38 @@ export default function PricingPage() {
             Start free. Upgrade when you need more.
           </p>
 
+          {isPro && session && (
+            <div className="mb-8 p-4 rounded-xl bg-green-500/10 border border-green-500/20 text-green-400">
+              You are currently on the Pro plan. Thank you for your support!
+            </div>
+          )}
+
+          {/* Plan Selector for Pro upgrade */}
+          {!isPro && session && (
+            <div className="flex justify-center gap-4 mb-8">
+              <button
+                onClick={() => setSelectedPlan('monthly')}
+                className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
+                  selectedPlan === 'monthly'
+                    ? 'bg-violet-600 text-white'
+                    : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                }`}
+              >
+                Monthly - $9/mo
+              </button>
+              <button
+                onClick={() => setSelectedPlan('yearly')}
+                className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
+                  selectedPlan === 'yearly'
+                    ? 'bg-violet-600 text-white'
+                    : 'bg-white/5 text-gray-400 hover:bg-white/10'
+                }`}
+              >
+                Yearly - $99/yr (Save 8%)
+              </button>
+            </div>
+          )}
+
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
             {/* Free Plan */}
             <div className="p-8 rounded-3xl bg-white/5 border border-white/10">
@@ -105,10 +188,12 @@ export default function PricingPage() {
               </div>
               <div className="text-sm text-violet-400 mb-2">Pro</div>
               <div className="flex items-baseline gap-1 mb-2">
-                <span className="text-4xl font-bold">$9</span>
-                <span className="text-gray-400">/month</span>
+                <span className="text-4xl font-bold">${selectedPlan === 'monthly' ? '9' : '99'}</span>
+                <span className="text-gray-400">/{selectedPlan === 'monthly' ? 'month' : 'year'}</span>
               </div>
-              <div className="text-gray-500 mb-6">or $99/year (save 8%)</div>
+              <div className="text-gray-500 mb-6">
+                {selectedPlan === 'monthly' ? '' : 'Save 8% compared to monthly'}
+              </div>
               <ul className="space-y-3 text-left mb-8">
                 <li className="flex items-center gap-3 text-gray-300">
                   <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -135,9 +220,22 @@ export default function PricingPage() {
                   Priority support
                 </li>
               </ul>
-              <button className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all font-medium">
-                Upgrade to Pro
-              </button>
+              {isPro ? (
+                <button
+                  disabled
+                  className="w-full py-3 rounded-xl bg-green-600/20 text-green-400 border border-green-500/20 font-medium cursor-default"
+                >
+                  Current Plan
+                </button>
+              ) : (
+                <button
+                  onClick={handleUpgrade}
+                  disabled={loading}
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all font-medium disabled:opacity-50"
+                >
+                  {loading ? 'Loading...' : 'Upgrade to Pro'}
+                </button>
+              )}
             </div>
           </div>
 

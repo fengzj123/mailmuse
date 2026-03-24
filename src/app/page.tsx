@@ -92,6 +92,8 @@ export default function Home() {
   const { data: session } = useSession();
   const router = useRouter();
   const isLoggedIn = !!session;
+  const [isPro, setIsPro] = useState(false);
+
   const {
     remaining,
     dailyLimit,
@@ -99,7 +101,27 @@ export default function Home() {
     checkAndIncrement,
     closeLimitModal,
     refresh,
-  } = useUsageTracker(isLoggedIn);
+  } = useUsageTracker(isLoggedIn, isPro);
+
+  // Check subscription status when session changes
+  useEffect(() => {
+    if (isLoggedIn) {
+      checkSubscription();
+    } else {
+      setIsPro(false);
+    }
+  }, [isLoggedIn]);
+
+  const checkSubscription = async () => {
+    try {
+      const res = await fetch('/api/subscription/check');
+      const data = await res.json();
+      setIsPro(data.isPro);
+    } catch (error) {
+      console.error('Failed to check subscription:', error);
+      setIsPro(false);
+    }
+  };
 
   const [scenario, setScenario] = useState('job-application');
   const [recipientRole, setRecipientRole] = useState('');
@@ -238,9 +260,17 @@ export default function Home() {
                 <span className="text-xl font-bold">MailCraftUs</span>
               </a>
               <div className="flex items-center gap-4">
-                <span className="text-sm text-gray-300">
-                  {remaining} / {dailyLimit} remaining
+                <span className={`text-sm px-3 py-1 rounded-full ${isPro ? 'bg-green-500/20 text-green-400' : 'bg-white/10 text-gray-300'}`}>
+                  {isPro ? 'Pro' : `${remaining} / ${dailyLimit} remaining`}
                 </span>
+                {!isPro && (
+                  <a
+                    href="/pricing"
+                    className="text-sm text-violet-400 hover:text-violet-300 transition-colors"
+                  >
+                    Upgrade
+                  </a>
+                )}
                 <a
                   href="/pricing"
                   className="text-sm text-gray-400 hover:text-white transition-colors"
@@ -393,7 +423,7 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                   <span>
-                    {remaining} / {dailyLimit} emails remaining today
+                    {isPro ? 'Unlimited emails' : `${remaining} / ${dailyLimit} emails remaining today`}
                   </span>
                 </div>
               </div>
