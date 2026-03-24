@@ -1,9 +1,10 @@
-export const metadata = {
-  title: 'Pricing - MailCraftUs',
-  description: 'Simple, transparent pricing for MailCraftUs AI Email Writer',
-};
+'use client';
+
+import { useSession, signOut } from 'next-auth/react';
 
 export default function PricingPage() {
+  const { data: session } = useSession();
+
   return (
     <div className="min-h-screen bg-[#0f0f23] text-white">
       {/* Navigation */}
@@ -19,15 +20,31 @@ export default function PricingPage() {
               <span className="text-xl font-bold">MailCraftUs</span>
             </a>
             <div className="flex items-center gap-4">
-              <a href="/" className="text-sm text-gray-400 hover:text-white transition-colors">
-                Home
-              </a>
-              <a
-                href="/auth/signin"
-                className="px-4 py-2 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full text-sm font-medium hover:from-violet-500 hover:to-purple-500 transition-all"
-              >
-                Sign In
-              </a>
+              {session ? (
+                <>
+                  <span className="text-sm text-gray-300">
+                    {session.user?.name || session.user?.email}
+                  </span>
+                  <button
+                    onClick={() => signOut()}
+                    className="text-sm text-gray-400 hover:text-white transition-colors"
+                  >
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <a href="/" className="text-sm text-gray-400 hover:text-white transition-colors">
+                    Home
+                  </a>
+                  <a
+                    href="/auth/signin"
+                    className="px-4 py-2 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full text-sm font-medium hover:from-violet-500 hover:to-purple-500 transition-all"
+                  >
+                    Sign In
+                  </a>
+                </>
+              )}
             </div>
           </div>
         </div>
