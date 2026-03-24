@@ -52,16 +52,17 @@ async function handleSubscriptionCreated(payload: any) {
     return;
   }
 
-  // Calculate end date based on billing cycle
+  // Only save subscription info, don't activate yet
+  // User should be activated after payment (in ACTIVATED event)
   const endDate = calculateEndDate(plan_id);
 
   await upsertUser(subscriber.email_address, {
-    subscription_tier: 'pro',
+    subscription_tier: 'free', // Start as free, upgrade to pro in ACTIVATED
     paypal_subscription_id: payload.resource.id,
     subscription_end_date: endDate,
   });
 
-  console.log('Subscription created for:', subscriber.email_address);
+  console.log('Subscription created (pending activation):', subscriber.email_address);
 }
 
 async function handleSubscriptionActivated(payload: any) {
@@ -71,28 +72,30 @@ async function handleSubscriptionActivated(payload: any) {
     return;
   }
 
-  // Ensure user is marked as pro
+  // User completed payment - now mark as pro
   await upsertUser(subscriber.email_address, {
     subscription_tier: 'pro',
   });
 
-  console.log('Subscription activated for:', subscriber.email_address);
+  console.log('Subscription activated (payment confirmed):', subscriber.email_address);
 }
 
 async function handleSubscriptionCancelled(payload: any) {
-  const subscriptionId = payload.resource.id;
+  const { id, subscriber } = payload.resource;
 
-  // We need to find user by subscription ID - for now just log
-  console.log('Subscription cancelled:', subscriptionId);
+  console.log('Subscription cancelled:', id);
 
-  // In production, query user by subscription_id
-  // For now, we'll rely on the check endpoint to verify status
+  // Try to find user by subscription_id first
+  // For now, rely on the check endpoint to verify status
+  // The user will be downgraded when we check subscription status
 }
 
 async function handleSubscriptionExpired(payload: any) {
-  const subscriptionId = payload.resource.id;
-  console.log('Subscription expired:', subscriptionId);
-  // Similar to cancelled
+  const { id, subscriber } = payload.resource;
+
+  console.log('Subscription expired:', id);
+
+  // Similar to cancelled - user will be downgraded on next status check
 }
 
 async function handlePaymentCompleted(payload: any) {
@@ -102,16 +105,18 @@ async function handlePaymentCompleted(payload: any) {
     return;
   }
 
-  // Update subscription end date
-  const nextPaymentDate = billing_info?.next_billing_time;
+  // Mark as pro on payment completion
+  // Update subscription end date based on billing cycle
+  const endDate = billing_info?.next_billing_time
+    ? new Date(billing_info.next_billing_time).toISOString()
+    : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // Default 30 days
 
-  if (nextPaymentDate) {
-    await upsertUser(subscriber.email_address, {
-      subscription_end_date: new Date(nextPaymentDate).toISOString(),
-    });
-  }
+  await upsertUser(subscriber.email_address, {
+    subscription_tier: 'pro',
+    subscription_end_date: endDate,
+  });
 
-  console.log('Payment completed for:', subscriber.email_address);
+  console.log('Payment completed, user marked as pro:', subscriber.email_address);
 }
 
 function calculateEndDate(planId: string): string {
