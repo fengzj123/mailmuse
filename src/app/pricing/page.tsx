@@ -91,7 +91,7 @@ export default function PricingPage() {
                 </li>
               </ul>
               <a
-                href="/auth/signin"
+                href="/"
                 className="block w-full py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all font-medium text-center"
               >
                 Get Started
