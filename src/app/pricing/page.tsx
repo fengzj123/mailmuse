@@ -8,6 +8,7 @@ export default function PricingPage() {
   const { data: session } = useSession();
   const router = useRouter();
   const [isPro, setIsPro] = useState(false);
+  const [planType, setPlanType] = useState<'monthly' | 'yearly' | null>(null);
   const [loading, setLoading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('monthly');
 
@@ -22,6 +23,7 @@ export default function PricingPage() {
       const res = await fetch('/api/subscription/check');
       const data = await res.json();
       setIsPro(data.isPro);
+      setPlanType(data.planType);
     } catch (error) {
       console.error('Failed to check subscription:', error);
     }
@@ -225,7 +227,7 @@ export default function PricingPage() {
                   disabled
                   className="w-full py-3 rounded-xl bg-green-600/20 text-green-400 border border-green-500/20 font-medium cursor-default"
                 >
-                  Current Plan
+                  {planType === 'yearly' ? 'Pro Yearly - $99/year' : 'Pro Monthly - $9/month'}
                 </button>
               ) : (
                 <button

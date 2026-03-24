@@ -93,6 +93,7 @@ export default function Home() {
   const router = useRouter();
   const isLoggedIn = !!session;
   const [isPro, setIsPro] = useState(false);
+  const [planType, setPlanType] = useState<'monthly' | 'yearly' | null>(null);
 
   const {
     remaining,
@@ -109,6 +110,7 @@ export default function Home() {
       checkSubscription();
     } else {
       setIsPro(false);
+      setPlanType(null);
     }
   }, [isLoggedIn]);
 
@@ -117,9 +119,11 @@ export default function Home() {
       const res = await fetch('/api/subscription/check');
       const data = await res.json();
       setIsPro(data.isPro);
+      setPlanType(data.planType);
     } catch (error) {
       console.error('Failed to check subscription:', error);
       setIsPro(false);
+      setPlanType(null);
     }
   };
 
@@ -261,7 +265,7 @@ export default function Home() {
               </a>
               <div className="flex items-center gap-4">
                 <span className={`text-sm px-3 py-1 rounded-full ${isPro ? 'bg-green-500/20 text-green-400' : 'bg-white/10 text-gray-300'}`}>
-                  {isPro ? 'Pro' : `${remaining} / ${dailyLimit} remaining`}
+                  {isPro ? (planType === 'yearly' ? 'Pro Yearly' : 'Pro Monthly') : `${remaining} / ${dailyLimit} remaining`}
                 </span>
                 {!isPro && (
                   <a
