@@ -14,8 +14,8 @@ export interface UsageTracker {
 
 // LocalStorage implementation
 const STORAGE_KEY = 'mailcraftus_usage';
-const DAILY_LIMIT_LOGGED_IN = 10;
-const DAILY_LIMIT_GUEST = 3;
+const DAILY_LIMIT_LOGGED_IN = 5;
+const DAILY_LIMIT_GUEST = 0; // Guest users get 0 free emails
 
 function getDateString(): string {
   return new Date().toISOString().split('T')[0];

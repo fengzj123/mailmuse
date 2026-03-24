@@ -150,6 +150,12 @@ export default function Home() {
       return;
     }
 
+    // Check if logged in
+    if (!isLoggedIn) {
+      router.push('/auth/signin');
+      return;
+    }
+
     // Check usage limit
     if (!checkAndIncrement()) {
       return; // Modal will be shown by the hook
@@ -441,15 +447,18 @@ export default function Home() {
 
               {/* Usage Indicator */}
               <div className="flex items-center justify-center gap-2 mt-3 text-sm text-gray-400">
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                <span>
-                  {remaining} / {dailyLimit} emails remaining today
-                </span>
-                {!isLoggedIn && (
+                {isLoggedIn ? (
+                  <>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>
+                      {remaining} / {dailyLimit} emails remaining today
+                    </span>
+                  </>
+                ) : (
                   <span className="text-violet-400">
-                    <a href="/auth/signin" className="hover:underline">Sign in</a> for 10/day
+                    <a href="/auth/signin" className="hover:underline">Sign in</a> to start using
                   </span>
                 )}
               </div>
@@ -570,7 +579,8 @@ export default function Home() {
                 Recommended
               </div>
               <div className="text-sm text-violet-400 mb-2">Pro</div>
-              <div className="text-4xl font-bold mb-6">$12<span className="text-lg text-gray-400">/mo</span></div>
+              <div className="text-4xl font-bold mb-6">$9<span className="text-lg text-gray-400">/mo</span></div>
+              <div className="text-sm text-gray-400 mb-6">or $99/year</div>
               <ul className="space-y-3 text-left mb-8">
                 <li className="flex items-center gap-3 text-gray-300">
                   <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -615,7 +625,7 @@ export default function Home() {
                 {isLoggedIn ? (
                   <>Upgrade to Pro for unlimited emails.</>
                 ) : (
-                  <>Sign in to get 10 emails per day, or upgrade to Pro for unlimited.</>
+                  <>Sign in to get 5 emails per day, or upgrade to Pro for unlimited.</>
                 )}
               </p>
             </div>
@@ -623,7 +633,7 @@ export default function Home() {
             <div className="space-y-3">
               {isLoggedIn ? (
                 <button className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all font-medium">
-                  Upgrade to Pro - $12/month
+                  Upgrade to Pro - $9/month
                 </button>
               ) : (
                 <>
@@ -631,10 +641,10 @@ export default function Home() {
                     onClick={() => router.push('/auth/signin')}
                     className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all font-medium"
                   >
-                    Sign in for 10 emails/day
+                    Sign in to start
                   </button>
                   <button className="w-full py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all font-medium">
-                    Upgrade to Pro - $12/month
+                    Upgrade to Pro - $9/month
                   </button>
                 </>
               )}
