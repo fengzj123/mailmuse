@@ -210,6 +210,7 @@ export async function createSubscription(planId: string, userEmail: string): Pro
       subscriber: {
         email_address: userEmail,
       },
+      custom_id: userEmail, // Store Google email to identify user in webhook
       return_url: `${process.env.NEXTAUTH_URL}/subscription/success`,
       cancel_url: `${process.env.NEXTAUTH_URL}/subscription/cancelled`,
     }),

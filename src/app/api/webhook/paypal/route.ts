@@ -45,39 +45,44 @@ export async function POST(request: NextRequest) {
 }
 
 async function handleSubscriptionCreated(payload: any) {
-  const { subscriber, plan_id } = payload.resource;
+  const { subscriber, plan_id, custom_id } = payload.resource;
 
-  if (!subscriber?.email_address) {
+  // Use custom_id (Google email) if available, otherwise fallback to PayPal email
+  const userEmail = custom_id || subscriber?.email_address;
+
+  if (!userEmail) {
     console.error('No email in subscription:', payload);
     return;
   }
 
   // Only save subscription info, don't activate yet
-  // User should be activated after payment (in ACTIVATED event)
   const endDate = calculateEndDate(plan_id);
 
-  await upsertUser(subscriber.email_address, {
+  await upsertUser(userEmail, {
     subscription_tier: 'free', // Start as free, upgrade to pro in ACTIVATED
     paypal_subscription_id: payload.resource.id,
     subscription_end_date: endDate,
   });
 
-  console.log('Subscription created (pending activation):', subscriber.email_address);
+  console.log('Subscription created (pending activation):', userEmail);
 }
 
 async function handleSubscriptionActivated(payload: any) {
-  const { subscriber } = payload.resource;
+  const { subscriber, custom_id } = payload.resource;
 
-  if (!subscriber?.email_address) {
+  // Use custom_id (Google email) if available
+  const userEmail = custom_id || subscriber?.email_address;
+
+  if (!userEmail) {
     return;
   }
 
   // User completed payment - now mark as pro
-  await upsertUser(subscriber.email_address, {
+  await upsertUser(userEmail, {
     subscription_tier: 'pro',
   });
 
-  console.log('Subscription activated (payment confirmed):', subscriber.email_address);
+  console.log('Subscription activated (payment confirmed):', userEmail);
 }
 
 async function handleSubscriptionCancelled(payload: any) {
@@ -99,24 +104,26 @@ async function handleSubscriptionExpired(payload: any) {
 }
 
 async function handlePaymentCompleted(payload: any) {
-  const { subscriber, billing_info } = payload.resource;
+  const { subscriber, billing_info, custom_id } = payload.resource;
 
-  if (!subscriber?.email_address) {
+  // Use custom_id (Google email) if available
+  const userEmail = custom_id || subscriber?.email_address;
+
+  if (!userEmail) {
     return;
   }
 
   // Mark as pro on payment completion
-  // Update subscription end date based on billing cycle
   const endDate = billing_info?.next_billing_time
     ? new Date(billing_info.next_billing_time).toISOString()
-    : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(); // Default 30 days
+    : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();
 
-  await upsertUser(subscriber.email_address, {
+  await upsertUser(userEmail, {
     subscription_tier: 'pro',
     subscription_end_date: endDate,
   });
 
-  console.log('Payment completed, user marked as pro:', subscriber.email_address);
+  console.log('Payment completed, user marked as pro:', userEmail);
 }
 
 function calculateEndDate(planId: string): string {
