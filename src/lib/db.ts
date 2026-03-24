@@ -13,12 +13,20 @@ export async function initDatabase() {
     CREATE TABLE IF NOT EXISTS users (
       email TEXT PRIMARY KEY,
       subscription_tier TEXT DEFAULT 'free' CHECK(subscription_tier IN ('free', 'pro')),
+      plan_type TEXT CHECK(plan_type IN ('monthly', 'yearly')),
       paypal_subscription_id TEXT,
       subscription_end_date TEXT,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP
     )
   `);
+
+  // Add plan_type column if it doesn't exist (for existing tables)
+  try {
+    await client.execute(`ALTER TABLE users ADD COLUMN plan_type TEXT`);
+  } catch {
+    // Column may already exist, ignore error
+  }
 }
 
 // Check if user is Pro
@@ -69,6 +77,7 @@ export async function getUserSubscription(email: string) {
 // Create or update user
 export async function upsertUser(email: string, data: {
   subscription_tier?: string;
+  plan_type?: string;
   paypal_subscription_id?: string;
   subscription_end_date?: string;
 }) {
@@ -81,6 +90,10 @@ export async function upsertUser(email: string, data: {
     if (data.subscription_tier !== undefined) {
       updates.push('subscription_tier = ?');
       args.push(data.subscription_tier);
+    }
+    if (data.plan_type !== undefined) {
+      updates.push('plan_type = ?');
+      args.push(data.plan_type);
     }
     if (data.paypal_subscription_id !== undefined) {
       updates.push('paypal_subscription_id = ?');
@@ -99,11 +112,12 @@ export async function upsertUser(email: string, data: {
     });
   } else {
     await client.execute({
-      sql: `INSERT INTO users (email, subscription_tier, paypal_subscription_id, subscription_end_date)
-            VALUES (?, ?, ?, ?)`,
+      sql: `INSERT INTO users (email, subscription_tier, plan_type, paypal_subscription_id, subscription_end_date)
+            VALUES (?, ?, ?, ?, ?)`,
       args: [
         email,
         data.subscription_tier || 'free',
+        data.plan_type || null,
         data.paypal_subscription_id || null,
         data.subscription_end_date || null,
       ],

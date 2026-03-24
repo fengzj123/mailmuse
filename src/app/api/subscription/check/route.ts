@@ -14,21 +14,10 @@ export async function GET() {
     const isPro = await isUserPro(session.user.email);
     const subscription = await getUserSubscription(session.user.email);
 
-    // Determine plan type based on PayPal plan ID
-    let planType = null;
-    if (subscription?.paypal_subscription_id) {
-      const subId = subscription.paypal_subscription_id as string;
-      if (subId.includes('yearly') || subId === process.env.PAYPAL_YEARLY_PLAN_ID) {
-        planType = 'yearly';
-      } else {
-        planType = 'monthly';
-      }
-    }
-
     return NextResponse.json({
       tier: isPro ? 'pro' : 'free',
       isPro,
-      planType,
+      planType: subscription?.plan_type || null,
       subscription: subscription ? {
         subscriptionId: subscription.paypal_subscription_id,
         endDate: subscription.subscription_end_date,

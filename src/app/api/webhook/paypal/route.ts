@@ -55,16 +55,19 @@ async function handleSubscriptionCreated(payload: any) {
     return;
   }
 
-  // Only save subscription info, don't activate yet
+  // Determine plan type from plan_id
+  const isYearlyPlan = plan_id === process.env.PAYPAL_YEARLY_PLAN_ID;
+  const planType = isYearlyPlan ? 'yearly' : 'monthly';
   const endDate = calculateEndDate(plan_id);
 
   await upsertUser(userEmail, {
     subscription_tier: 'free', // Start as free, upgrade to pro in ACTIVATED
     paypal_subscription_id: payload.resource.id,
     subscription_end_date: endDate,
+    plan_type: planType,
   });
 
-  console.log('Subscription created (pending activation):', userEmail);
+  console.log('Subscription created (pending activation):', userEmail, 'plan:', planType);
 }
 
 async function handleSubscriptionActivated(payload: any) {
