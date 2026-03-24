@@ -114,6 +114,12 @@ export async function createMonthlyPlan(productId: string, price: string): Promi
           tenure_type: 'REGULAR',
           sequence: 1,
           total_cycles: 0,
+          pricing_scheme: {
+            fixed_price: {
+              value: price,
+              currency_code: 'USD',
+            },
+          },
         },
       ],
       payment_preferences: {
@@ -124,12 +130,6 @@ export async function createMonthlyPlan(productId: string, price: string): Promi
         },
         setup_fee_failure_action: 'CONTINUE',
         payment_failure_threshold: 3,
-      },
-      pricing_scheme: {
-        fixed_price: {
-          value: price,
-          currency_code: 'USD',
-        },
       },
     }),
   });
@@ -166,6 +166,12 @@ export async function createYearlyPlan(productId: string, price: string): Promis
           tenure_type: 'REGULAR',
           sequence: 1,
           total_cycles: 0,
+          pricing_scheme: {
+            fixed_price: {
+              value: price,
+              currency_code: 'USD',
+            },
+          },
         },
       ],
       payment_preferences: {
@@ -176,12 +182,6 @@ export async function createYearlyPlan(productId: string, price: string): Promis
         },
         setup_fee_failure_action: 'CONTINUE',
         payment_failure_threshold: 3,
-      },
-      pricing_scheme: {
-        fixed_price: {
-          value: price,
-          currency_code: 'USD',
-        },
       },
     }),
   });
