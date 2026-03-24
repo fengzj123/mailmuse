@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useUsageTracker } from '@/lib/useUsageTracker';
+import { saveFormData, getFormData, clearFormData, FormData } from '@/lib/formStorage';
 
 const scenarios = [
   { value: 'job-application', label: 'Job Application' },
@@ -112,6 +113,24 @@ export default function Home() {
   const [error, setError] = useState('');
   const [isDemo, setIsDemo] = useState(false);
 
+  // Restore form data from localStorage on mount and after login
+  useEffect(() => {
+    const saved = getFormData();
+    if (saved) {
+      setScenario(saved.scenario);
+      setRecipientRole(saved.recipientRole);
+      setSenderBackground(saved.senderBackground);
+      setEmailPurpose(saved.emailPurpose);
+      setTone(saved.tone);
+      setLanguage(saved.language);
+    }
+  }, [isLoggedIn]);
+
+  // Save form data to localStorage on change
+  const persistFormData = useCallback(() => {
+    saveFormData({ scenario, recipientRole, senderBackground, emailPurpose, tone, language });
+  }, [scenario, recipientRole, senderBackground, emailPurpose, tone, language]);
+
   const handleWatchDemo = () => {
     setScenario(demoData.scenario);
     setRecipientRole(demoData.recipientRole);
@@ -142,6 +161,7 @@ export default function Home() {
     setGeneratedEmail('');
     setIsDemo(false);
     setError('');
+    clearFormData();
   };
 
   const handleGenerate = async () => {
@@ -256,7 +276,7 @@ export default function Home() {
                     <label className="text-sm font-medium text-gray-300">Scenario</label>
                     <select
                       value={scenario}
-                      onChange={(e) => { setScenario(e.target.value); handleDemoModeExit(); }}
+                      onChange={(e) => { setScenario(e.target.value); handleDemoModeExit(); persistFormData(); }}
                       className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none appearance-none cursor-pointer"
                     >
                       {scenarios.map((s) => (
@@ -271,7 +291,7 @@ export default function Home() {
                     <label className="text-sm font-medium text-gray-300">Tone</label>
                     <select
                       value={tone}
-                      onChange={(e) => { setTone(e.target.value); handleDemoModeExit(); }}
+                      onChange={(e) => { setTone(e.target.value); handleDemoModeExit(); persistFormData(); }}
                       className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none appearance-none cursor-pointer"
                     >
                       {tones.map((t) => (
@@ -286,7 +306,7 @@ export default function Home() {
                     <label className="text-sm font-medium text-gray-300">Language</label>
                     <select
                       value={language}
-                      onChange={(e) => { setLanguage(e.target.value); handleDemoModeExit(); }}
+                      onChange={(e) => { setLanguage(e.target.value); handleDemoModeExit(); persistFormData(); }}
                       className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none appearance-none cursor-pointer"
                     >
                       {languages.map((l) => (
@@ -304,7 +324,7 @@ export default function Home() {
                   <input
                     type="text"
                     value={recipientRole}
-                    onChange={(e) => { setRecipientRole(e.target.value); handleDemoModeExit(); }}
+                    onChange={(e) => { setRecipientRole(e.target.value); handleDemoModeExit(); persistFormData(); }}
                     placeholder="e.g., Hiring Manager at Google"
                     className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none placeholder:text-gray-500"
                   />
@@ -317,7 +337,7 @@ export default function Home() {
                   </label>
                   <textarea
                     value={senderBackground}
-                    onChange={(e) => { setSenderBackground(e.target.value); handleDemoModeExit(); }}
+                    onChange={(e) => { setSenderBackground(e.target.value); handleDemoModeExit(); persistFormData(); }}
                     placeholder="Briefly describe yourself or your company..."
                     rows={2}
                     className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none placeholder:text-gray-500 resize-none"
@@ -329,7 +349,7 @@ export default function Home() {
                   <label className="text-sm font-medium text-gray-300">Email Purpose</label>
                   <textarea
                     value={emailPurpose}
-                    onChange={(e) => { setEmailPurpose(e.target.value); handleDemoModeExit(); }}
+                    onChange={(e) => { setEmailPurpose(e.target.value); handleDemoModeExit(); persistFormData(); }}
                     placeholder="What do you want to say? Include key points you want to cover..."
                     rows={3}
                     className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none placeholder:text-gray-500 resize-none"
@@ -617,7 +637,7 @@ export default function Home() {
                   <label className="text-sm font-medium text-gray-300">Scenario</label>
                   <select
                     value={scenario}
-                    onChange={(e) => { setScenario(e.target.value); handleDemoModeExit(); }}
+                    onChange={(e) => { setScenario(e.target.value); handleDemoModeExit(); persistFormData(); }}
                     className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none appearance-none cursor-pointer"
                   >
                     {scenarios.map((s) => (
@@ -632,7 +652,7 @@ export default function Home() {
                   <label className="text-sm font-medium text-gray-300">Tone</label>
                   <select
                     value={tone}
-                    onChange={(e) => { setTone(e.target.value); handleDemoModeExit(); }}
+                    onChange={(e) => { setTone(e.target.value); handleDemoModeExit(); persistFormData(); }}
                     className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none appearance-none cursor-pointer"
                   >
                     {tones.map((t) => (
@@ -647,7 +667,7 @@ export default function Home() {
                   <label className="text-sm font-medium text-gray-300">Language</label>
                   <select
                     value={language}
-                    onChange={(e) => { setLanguage(e.target.value); handleDemoModeExit(); }}
+                    onChange={(e) => { setLanguage(e.target.value); handleDemoModeExit(); persistFormData(); }}
                     className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none appearance-none cursor-pointer"
                   >
                     {languages.map((l) => (
@@ -665,7 +685,7 @@ export default function Home() {
                 <input
                   type="text"
                   value={recipientRole}
-                  onChange={(e) => { setRecipientRole(e.target.value); handleDemoModeExit(); }}
+                  onChange={(e) => { setRecipientRole(e.target.value); handleDemoModeExit(); persistFormData(); }}
                   placeholder="e.g., Hiring Manager at Google"
                   className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none placeholder:text-gray-500"
                 />
@@ -678,7 +698,7 @@ export default function Home() {
                 </label>
                 <textarea
                   value={senderBackground}
-                  onChange={(e) => { setSenderBackground(e.target.value); handleDemoModeExit(); }}
+                  onChange={(e) => { setSenderBackground(e.target.value); handleDemoModeExit(); persistFormData(); }}
                   placeholder="Briefly describe yourself or your company..."
                   rows={2}
                   className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none placeholder:text-gray-500 resize-none"
@@ -690,7 +710,7 @@ export default function Home() {
                 <label className="text-sm font-medium text-gray-300">Email Purpose</label>
                 <textarea
                   value={emailPurpose}
-                  onChange={(e) => { setEmailPurpose(e.target.value); handleDemoModeExit(); }}
+                  onChange={(e) => { setEmailPurpose(e.target.value); handleDemoModeExit(); persistFormData(); }}
                   placeholder="What do you want to say? Include key points you want to cover..."
                   rows={3}
                   className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none placeholder:text-gray-500 resize-none"
