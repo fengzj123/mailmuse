@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useUsageTracker } from '@/lib/useUsageTracker';
@@ -94,6 +94,19 @@ export default function Home() {
   const isLoggedIn = !!session;
   const [isPro, setIsPro] = useState(false);
   const [planType, setPlanType] = useState<'monthly' | 'yearly' | null>(null);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setShowUserMenu(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const {
     remaining,
@@ -281,12 +294,45 @@ export default function Home() {
                 >
                   Pricing
                 </a>
-                <button
-                  onClick={() => signOut()}
-                  className="text-sm text-gray-400 hover:text-white transition-colors"
-                >
-                  Sign Out
-                </button>
+                {/* User dropdown */}
+                <div className="relative" ref={userMenuRef}>
+                  <button
+                    onClick={() => setShowUserMenu(!showUserMenu)}
+                    className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+                  >
+                    {session?.user?.image ? (
+                      <img
+                        src={session.user.image}
+                        alt={session.user.name || 'User'}
+                        className="w-8 h-8 rounded-full"
+                      />
+                    ) : (
+                      <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white text-sm font-medium">
+                        {session?.user?.name?.[0] || session?.user?.email?.[0] || 'U'}
+                      </div>
+                    )}
+                  </button>
+                  {showUserMenu && (
+                    <div className="absolute right-0 mt-2 w-48 rounded-xl bg-[#1a1a2e] border border-white/10 shadow-lg overflow-hidden">
+                      <div className="px-4 py-3 border-b border-white/10">
+                        <p className="text-sm font-medium truncate">{session?.user?.name || 'User'}</p>
+                        <p className="text-xs text-gray-400 truncate">{session?.user?.email}</p>
+                      </div>
+                      <a
+                        href="/profile"
+                        className="block px-4 py-2 text-sm text-gray-300 hover:bg-white/5 transition-colors"
+                      >
+                        Profile
+                      </a>
+                      <button
+                        onClick={() => signOut()}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-white/5 transition-colors"
+                      >
+                        Sign Out
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
