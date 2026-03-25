@@ -190,11 +190,19 @@ export default function PricingPage() {
               </div>
               <div className="text-sm text-violet-400 mb-2">Pro</div>
               <div className="flex items-baseline gap-1 mb-2">
-                <span className="text-4xl font-bold">${selectedPlan === 'monthly' ? '9' : '99'}</span>
-                <span className="text-gray-400">/{selectedPlan === 'monthly' ? 'month' : 'year'}</span>
+                <span className="text-4xl font-bold">
+                  {isPro
+                    ? (planType === 'yearly' ? '$99' : '$9')
+                    : (selectedPlan === 'monthly' ? '$9' : '$99')}
+                </span>
+                <span className="text-gray-400">
+                  /{isPro ? (planType === 'yearly' ? 'year' : 'month') : (selectedPlan === 'monthly' ? 'month' : 'year')}
+                </span>
               </div>
               <div className="text-gray-500 mb-6">
-                {selectedPlan === 'monthly' ? '' : 'Save 8% compared to monthly'}
+                {isPro
+                  ? (planType === 'yearly' ? 'Best value!' : '')
+                  : (selectedPlan === 'monthly' ? '' : 'Save 8% compared to monthly')}
               </div>
               <ul className="space-y-3 text-left mb-8">
                 <li className="flex items-center gap-3 text-gray-300">
