@@ -12,6 +12,8 @@ export async function initDatabase() {
   await client.execute(`
     CREATE TABLE IF NOT EXISTS users (
       email TEXT PRIMARY KEY,
+      name TEXT,
+      avatar_url TEXT,
       subscription_tier TEXT DEFAULT 'free' CHECK(subscription_tier IN ('free', 'pro')),
       plan_type TEXT CHECK(plan_type IN ('monthly', 'yearly')),
       paypal_subscription_id TEXT,
@@ -21,11 +23,21 @@ export async function initDatabase() {
     )
   `);
 
-  // Add plan_type column if it doesn't exist (for existing tables)
+  // Add columns if they don't exist (for existing tables)
+  try {
+    await client.execute(`ALTER TABLE users ADD COLUMN name TEXT`);
+  } catch {
+    // Column may already exist, ignore
+  }
+  try {
+    await client.execute(`ALTER TABLE users ADD COLUMN avatar_url TEXT`);
+  } catch {
+    // Column may already exist, ignore
+  }
   try {
     await client.execute(`ALTER TABLE users ADD COLUMN plan_type TEXT`);
   } catch {
-    // Column may already exist, ignore error
+    // Column may already exist, ignore
   }
 }
 
@@ -76,6 +88,8 @@ export async function getUserSubscription(email: string) {
 
 // Create or update user
 export async function upsertUser(email: string, data: {
+  name?: string;
+  avatar_url?: string;
   subscription_tier?: string;
   plan_type?: string;
   paypal_subscription_id?: string;
@@ -87,6 +101,14 @@ export async function upsertUser(email: string, data: {
     const updates: string[] = ['updated_at = CURRENT_TIMESTAMP'];
     const args: (string | null)[] = [];
 
+    if (data.name !== undefined) {
+      updates.push('name = ?');
+      args.push(data.name);
+    }
+    if (data.avatar_url !== undefined) {
+      updates.push('avatar_url = ?');
+      args.push(data.avatar_url);
+    }
     if (data.subscription_tier !== undefined) {
       updates.push('subscription_tier = ?');
       args.push(data.subscription_tier);
@@ -112,10 +134,12 @@ export async function upsertUser(email: string, data: {
     });
   } else {
     await client.execute({
-      sql: `INSERT INTO users (email, subscription_tier, plan_type, paypal_subscription_id, subscription_end_date)
-            VALUES (?, ?, ?, ?, ?)`,
+      sql: `INSERT INTO users (email, name, avatar_url, subscription_tier, plan_type, paypal_subscription_id, subscription_end_date)
+            VALUES (?, ?, ?, ?, ?, ?, ?)`,
       args: [
         email,
+        data.name || null,
+        data.avatar_url || null,
         data.subscription_tier || 'free',
         data.plan_type || null,
         data.paypal_subscription_id || null,
