@@ -18,13 +18,13 @@ export async function POST() {
       return NextResponse.json({ error: 'No active subscription' }, { status: 400 });
     }
 
+    // Call PayPal to cancel future billing
+    // User keeps Pro access until subscription_end_date
     await cancelSubscription(subscription.paypal_subscription_id as string);
 
-    // Downgrade to free
-    await upsertUser(session.user.email, {
-      subscription_tier: 'free',
-      paypal_subscription_id: '',
-    });
+    // Note: We do NOT change subscription_tier here
+    // The user should keep Pro access until subscription_end_date
+    // When the date passes, isUserPro() will return false automatically
 
     return NextResponse.json({ success: true });
   } catch (error) {
