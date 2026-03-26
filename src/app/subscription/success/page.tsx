@@ -41,9 +41,12 @@ export default function SubscriptionSuccess() {
         <p className="text-gray-400 mb-8">
           Thank you for subscribing to MailCraftUs Pro. You now have unlimited email generation.
         </p>
-        <p className="text-gray-500 text-sm">
-          Redirecting to home page...
-        </p>
+        <a
+          href="/"
+          className="inline-block px-8 py-3 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full font-medium hover:from-violet-500 hover:to-purple-500 transition-all"
+        >
+          Go to Generator
+        </a>
       </div>
     </div>
   );
