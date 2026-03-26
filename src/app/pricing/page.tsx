@@ -2,15 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { useSession, signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import PayPalButton from '@/components/PayPalButton';
 
 export default function PricingPage() {
   const { data: session } = useSession();
-  const router = useRouter();
   const [isPro, setIsPro] = useState(false);
   const [planType, setPlanType] = useState<'monthly' | 'yearly' | null>(null);
-  const [loading, setLoading] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<'monthly' | 'yearly'>('monthly');
+  const [showPayPal, setShowPayPal] = useState(false);
 
   useEffect(() => {
     if (session?.user?.email) {
@@ -31,31 +30,10 @@ export default function PricingPage() {
 
   const handleUpgrade = async () => {
     if (!session) {
-      router.push('/auth/signin?callbackUrl=/pricing');
+      window.location.href = '/auth/signin?callbackUrl=/pricing';
       return;
     }
-
-    setLoading(true);
-    try {
-      const res = await fetch('/api/subscription/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ planType: selectedPlan }),
-      });
-
-      const data = await res.json();
-
-      if (data.approvalUrl) {
-        window.location.href = data.approvalUrl;
-      } else {
-        alert('Failed to create subscription. Please try again.');
-      }
-    } catch (error) {
-      console.error('Upgrade error:', error);
-      alert('Failed to start upgrade. Please try again.');
-    } finally {
-      setLoading(false);
-    }
+    setShowPayPal(true);
   };
 
   return (
@@ -237,13 +215,22 @@ export default function PricingPage() {
                 >
                   {planType === 'yearly' ? 'Pro Yearly - $99/year' : 'Pro Monthly - $9/month'}
                 </button>
+              ) : showPayPal ? (
+                <div className="space-y-3">
+                  <PayPalButton planType={selectedPlan} />
+                  <button
+                    onClick={() => setShowPayPal(false)}
+                    className="w-full py-2 text-gray-400 hover:text-white transition-colors text-sm"
+                  >
+                    Change plan
+                  </button>
+                </div>
               ) : (
                 <button
                   onClick={handleUpgrade}
-                  disabled={loading}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all font-medium disabled:opacity-50"
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all font-medium"
                 >
-                  {loading ? 'Loading...' : 'Upgrade to Pro'}
+                  Upgrade to Pro
                 </button>
               )}
             </div>
