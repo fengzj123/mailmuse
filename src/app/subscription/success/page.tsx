@@ -1,34 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 export default function SubscriptionSuccess() {
-  const router = useRouter();
-  const { data: session, status } = useSession();
-
-  useEffect(() => {
-    if (status === 'authenticated') {
-      // Redirect to home after 3 seconds
-      const timer = setTimeout(() => {
-        router.push('/');
-      }, 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [status, router]);
-
-  if (status === 'loading') {
-    return (
-      <div className="min-h-screen bg-[#0f0f23] text-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin h-12 w-12 border-4 border-violet-500 border-t-transparent rounded-full mx-auto mb-4" />
-          <p className="text-gray-400">Processing your subscription...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen bg-[#0f0f23] text-white flex items-center justify-center">
       <div className="text-center max-w-md mx-auto px-6">
@@ -41,12 +15,12 @@ export default function SubscriptionSuccess() {
         <p className="text-gray-400 mb-8">
           Thank you for subscribing to MailCraftUs Pro. You now have unlimited email generation.
         </p>
-        <a
+        <Link
           href="/"
           className="inline-block px-8 py-3 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full font-medium hover:from-violet-500 hover:to-purple-500 transition-all"
         >
           Go to Generator
-        </a>
+        </Link>
       </div>
     </div>
   );
