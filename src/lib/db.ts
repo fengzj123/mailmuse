@@ -39,6 +39,16 @@ export async function initDatabase() {
   } catch {
     // Column may already exist, ignore
   }
+  try {
+    await client.execute(`ALTER TABLE users ADD COLUMN daily_usage_date TEXT`);
+  } catch {
+    // Column may already exist, ignore
+  }
+  try {
+    await client.execute(`ALTER TABLE users ADD COLUMN daily_usage_count INTEGER DEFAULT 0`);
+  } catch {
+    // Column may already exist, ignore
+  }
 }
 
 // Check if user is Pro
@@ -87,6 +97,84 @@ export async function getUserSubscription(email: string) {
 }
 
 // Create or update user
+// Get today's date string in local time
+function getTodayDateString(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+// Check and increment daily usage for free users
+export async function checkAndIncrementDailyUsage(email: string, limit: number = 5): Promise<{ allowed: boolean; remaining: number; todayUsage: number }> {
+  const today = getTodayDateString();
+
+  // Get current usage
+  const result = await client.execute({
+    sql: 'SELECT daily_usage_date, daily_usage_count FROM users WHERE email = ?',
+    args: [email],
+  });
+
+  if (result.rows.length === 0) {
+    // User doesn't exist, should not happen
+    return { allowed: false, remaining: 0, todayUsage: 0 };
+  }
+
+  const user = result.rows[0];
+  const storedDate = user.daily_usage_date as string | null;
+  let todayUsage = user.daily_usage_count as number || 0;
+
+  // Reset if it's a new day
+  if (storedDate !== today) {
+    todayUsage = 0;
+    await client.execute({
+      sql: 'UPDATE users SET daily_usage_date = ?, daily_usage_count = 0 WHERE email = ?',
+      args: [today, email],
+    });
+  }
+
+  // Check if limit reached
+  if (todayUsage >= limit) {
+    return { allowed: false, remaining: 0, todayUsage };
+  }
+
+  // Increment usage
+  todayUsage += 1;
+  await client.execute({
+    sql: 'UPDATE users SET daily_usage_date = ?, daily_usage_count = ? WHERE email = ?',
+    args: [today, todayUsage, email],
+  });
+
+  return { allowed: true, remaining: Math.max(0, limit - todayUsage), todayUsage };
+}
+
+// Get remaining daily usage for a user
+export async function getRemainingDailyUsage(email: string, limit: number = 5): Promise<{ remaining: number; todayUsage: number; isNewDay: boolean }> {
+  const today = getTodayDateString();
+
+  const result = await client.execute({
+    sql: 'SELECT daily_usage_date, daily_usage_count FROM users WHERE email = ?',
+    args: [email],
+  });
+
+  if (result.rows.length === 0) {
+    return { remaining: limit, todayUsage: 0, isNewDay: true };
+  }
+
+  const user = result.rows[0];
+  const storedDate = user.daily_usage_date as string | null;
+  let todayUsage = user.daily_usage_count as number || 0;
+
+  // Check if it's a new day
+  const isNewDay = storedDate !== today;
+  if (isNewDay) {
+    todayUsage = 0;
+  }
+
+  return { remaining: Math.max(0, limit - todayUsage), todayUsage, isNewDay };
+}
+
 export async function upsertUser(email: string, data: {
   name?: string;
   avatar_url?: string;

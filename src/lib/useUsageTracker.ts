@@ -1,25 +1,51 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { createLocalStorageTracker, UsageTracker, getDailyLimit } from './usageTracker';
+import { getDailyLimit } from './usageTracker';
+
+const FREE_DAILY_LIMIT = 5;
+
+interface UsageData {
+  remaining: number;
+  usedToday: number;
+  dailyLimit: number;
+}
 
 export function useUsageTracker(isLoggedIn: boolean, isPro: boolean = false) {
-  const [tracker, setTracker] = useState<UsageTracker | null>(null);
   const [remaining, setRemaining] = useState(0);
+  const [usedToday, setUsedToday] = useState(0);
   const [showLimitModal, setShowLimitModal] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Pro users have unlimited usage, no need for tracker
-    if (isPro) {
-      setTracker(null);
+  const dailyLimit = isPro ? Infinity : FREE_DAILY_LIMIT;
+
+  // Fetch usage from server when logged in
+  const fetchUsage = useCallback(async () => {
+    if (!isLoggedIn || isPro) {
       setRemaining(Infinity);
+      setUsedToday(0);
+      setLoading(false);
       return;
     }
 
-    const newTracker = createLocalStorageTracker(isLoggedIn);
-    setTracker(newTracker);
-    setRemaining(newTracker.getRemaining());
+    try {
+      const res = await fetch('/api/usage/check');
+      const data: UsageData = await res.json();
+      setRemaining(data.remaining);
+      setUsedToday(data.usedToday);
+    } catch (error) {
+      console.error('Failed to fetch usage:', error);
+      // If fetch fails, assume they can try (server will validate)
+      setRemaining(FREE_DAILY_LIMIT);
+      setUsedToday(0);
+    } finally {
+      setLoading(false);
+    }
   }, [isLoggedIn, isPro]);
+
+  useEffect(() => {
+    fetchUsage();
+  }, [fetchUsage]);
 
   const checkAndIncrement = useCallback(() => {
     // Pro users always have unlimited access
@@ -27,38 +53,38 @@ export function useUsageTracker(isLoggedIn: boolean, isPro: boolean = false) {
       return true;
     }
 
-    if (!tracker) return false;
-
-    if (tracker.isLimitReached()) {
+    if (remaining <= 0) {
       setShowLimitModal(true);
       return false;
     }
 
-    const success = tracker.incrementUsage();
-    if (success) {
-      setRemaining(tracker.getRemaining());
-    }
-    return success;
-  }, [tracker, isPro]);
+    return true;
+  }, [remaining, isPro]);
+
+  const decrement = useCallback(() => {
+    // Called after successful API request to decrement locally
+    // This is optimistic - the server is authoritative
+    setRemaining(prev => Math.max(0, prev - 1));
+    setUsedToday(prev => prev + 1);
+  }, []);
 
   const refresh = useCallback(() => {
-    if (tracker) {
-      setRemaining(tracker.getRemaining());
-    }
-  }, [tracker]);
+    fetchUsage();
+  }, [fetchUsage]);
 
   const closeLimitModal = useCallback(() => {
     setShowLimitModal(false);
   }, []);
 
-  const dailyLimit = isPro ? Infinity : getDailyLimit(isLoggedIn);
-
   return {
     remaining,
+    usedToday,
     dailyLimit,
     showLimitModal,
     checkAndIncrement,
+    decrement,
     refresh,
     closeLimitModal,
+    loading,
   };
 }

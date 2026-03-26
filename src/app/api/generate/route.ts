@@ -2,7 +2,9 @@ import { generateEmail } from '@/lib/qwen';
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { isUserPro } from '@/lib/db';
+import { isUserPro, checkAndIncrementDailyUsage } from '@/lib/db';
+
+const FREE_DAILY_LIMIT = 5;
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,14 +17,32 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const userEmail = session.user.email;
+
     // Check subscription status
-    const isPro = await isUserPro(session.user.email);
+    const isPro = await isUserPro(userEmail);
 
     if (!isPro) {
-      return NextResponse.json(
-        { error: 'Free limit reached. Please upgrade to Pro for unlimited emails.' },
-        { status: 403 }
-      );
+      // Check and increment daily usage for free users
+      const { allowed, remaining, todayUsage } = await checkAndIncrementDailyUsage(userEmail, FREE_DAILY_LIMIT);
+
+      if (!allowed) {
+        return NextResponse.json(
+          {
+            error: 'Daily limit reached. Please upgrade to Pro for unlimited emails.',
+            dailyLimit: FREE_DAILY_LIMIT,
+            usedToday: todayUsage,
+            remaining: 0,
+          },
+          { status: 403 }
+        );
+      }
+
+      return NextResponse.json({
+        remaining,
+        usedToday: todayUsage,
+        dailyLimit: FREE_DAILY_LIMIT,
+      });
     }
 
     const body = await request.json();

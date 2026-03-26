@@ -113,6 +113,7 @@ export default function Home() {
     dailyLimit,
     showLimitModal,
     checkAndIncrement,
+    decrement,
     closeLimitModal,
     refresh,
   } = useUsageTracker(isLoggedIn, isPro);
@@ -245,7 +246,7 @@ export default function Home() {
       }
 
       setGeneratedEmail(data.email);
-      refresh(); // Update remaining count
+      decrement(); // Optimistically update local counter
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
