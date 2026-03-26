@@ -9,6 +9,9 @@ export default function ProfilePage() {
   const [isPro, setIsPro] = useState(false);
   const [planType, setPlanType] = useState<'monthly' | 'yearly' | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
+  const [showCancelModal, setShowCancelModal] = useState(false);
+  const [cancelling, setCancelling] = useState(false);
+  const [cancelSuccess, setCancelSuccess] = useState(false);
 
   useEffect(() => {
     if (session?.user?.email) {
@@ -25,6 +28,21 @@ export default function ProfilePage() {
       setEndDate(data.subscription?.endDate || null);
     } catch (error) {
       console.error('Failed to check subscription:', error);
+    }
+  };
+
+  const handleCancelSubscription = async () => {
+    setCancelling(true);
+    try {
+      const res = await fetch('/api/subscription/cancel', { method: 'POST' });
+      if (res.ok) {
+        setCancelSuccess(true);
+        setShowCancelModal(false);
+      }
+    } catch (error) {
+      console.error('Failed to cancel subscription:', error);
+    } finally {
+      setCancelling(false);
     }
   };
 
@@ -83,6 +101,13 @@ export default function ProfilePage() {
         </div>
       </nav>
 
+      {/* Cancel Success Toast */}
+      {cancelSuccess && (
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 px-6 py-3 rounded-xl bg-green-500/20 border border-green-500/30 text-green-400">
+          Subscription cancelled. You will continue to have Pro access until {formatDate(endDate)}.
+        </div>
+      )}
+
       {/* Profile Content */}
       <div className="max-w-2xl mx-auto px-6 py-12">
         <h1 className="text-3xl font-bold mb-8">Profile</h1>
@@ -133,6 +158,14 @@ export default function ProfilePage() {
 
         {/* Actions */}
         <div className="space-y-4">
+          {isPro && (
+            <button
+              onClick={() => setShowCancelModal(true)}
+              className="block w-full py-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all font-medium text-center text-gray-300"
+            >
+              Cancel Subscription
+            </button>
+          )}
           {!isPro && (
             <Link
               href="/pricing"
@@ -149,6 +182,41 @@ export default function ProfilePage() {
           </Link>
         </div>
       </div>
+
+      {/* Cancel Confirmation Modal */}
+      {showCancelModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-6">
+          <div className="max-w-md w-full bg-gradient-to-b from-[#1a1a2e] to-[#0f0f23] border border-white/10 rounded-3xl p-8">
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-orange-500/20 flex items-center justify-center">
+                <svg className="w-8 h-8 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold mb-2">Cancel Subscription?</h2>
+              <p className="text-gray-400 text-sm">
+                Your subscription will be cancelled. You will continue to have Pro access until {formatDate(endDate)}.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <button
+                onClick={handleCancelSubscription}
+                disabled={cancelling}
+                className="w-full py-3 rounded-xl bg-red-600/20 text-red-400 hover:bg-red-600/30 transition-all font-medium disabled:opacity-50"
+              >
+                {cancelling ? 'Cancelling...' : 'Confirm Cancellation'}
+              </button>
+              <button
+                onClick={() => setShowCancelModal(false)}
+                className="w-full py-3 text-gray-400 hover:text-white transition-colors"
+              >
+                Keep Subscription
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

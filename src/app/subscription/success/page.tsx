@@ -1,8 +1,26 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 export default function SubscriptionSuccess() {
+  const [countdown, setCountdown] = useState(3);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCountdown((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          window.location.href = '/';
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#0f0f23] text-white flex items-center justify-center">
       <div className="text-center max-w-md mx-auto px-6">
@@ -17,10 +35,13 @@ export default function SubscriptionSuccess() {
         </p>
         <Link
           href="/"
-          className="inline-block px-8 py-3 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full font-medium hover:from-violet-500 hover:to-purple-500 transition-all"
+          className="inline-block px-8 py-3 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full font-medium hover:from-violet-500 hover:to-purple-500 transition-all mb-4"
         >
           Go to Generator
         </Link>
+        <p className="text-gray-500 text-sm">
+          Redirecting in {countdown} seconds...
+        </p>
       </div>
     </div>
   );
