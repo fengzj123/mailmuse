@@ -22,8 +22,8 @@ export async function POST(request: NextRequest) {
     // Check subscription status
     const isPro = await isUserPro(userEmail);
 
+    // Check and increment daily usage for free users
     if (!isPro) {
-      // Check and increment daily usage for free users
       const { allowed, remaining, todayUsage } = await checkAndIncrementDailyUsage(userEmail, FREE_DAILY_LIMIT);
 
       if (!allowed) {
@@ -37,12 +37,6 @@ export async function POST(request: NextRequest) {
           { status: 403 }
         );
       }
-
-      return NextResponse.json({
-        remaining,
-        usedToday: todayUsage,
-        dailyLimit: FREE_DAILY_LIMIT,
-      });
     }
 
     const body = await request.json();
