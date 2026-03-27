@@ -29,9 +29,20 @@ export async function generateEmail(params: {
     friendly: 'Use warm, approachable language with slight casualness',
   };
 
-  const languageInstruction = language !== 'English'
-    ? `Write the email in ${language}.`
-    : '';
+  const languageInstructions: Record<string, string> = {
+    English: 'Write the email in English.',
+    Chinese: 'Write the email in Chinese.',
+    Spanish: 'Write the email in Spanish.',
+    French: 'Write the email in French.',
+    German: 'Write the email in German.',
+    Japanese: 'Write the email in Japanese.',
+    Korean: 'Write the email in Korean.',
+    Portuguese: 'Write the email in Portuguese.',
+    Russian: 'Write the email in Russian.',
+    Arabic: 'Write the email in Arabic.',
+  };
+
+  const languageInstruction = languageInstructions[language] || `Write the email in ${language}.`;
 
   const prompt = `You are a professional email writer. Write a ${tone} email for the following scenario:
 
