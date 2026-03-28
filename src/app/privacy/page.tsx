@@ -64,7 +64,7 @@ export default function PrivacyPage() {
             <h2 className="text-xl font-semibold text-white mb-3">Contact Us</h2>
             <p>
               If you have questions about this Privacy Policy, please contact us at{' '}
-              <a href="mailto:privacy@MailCraftUs.com" className="text-violet-400 hover:text-violet-300">
+              <a href="mailto:privacy@MailCraftUs.com" className="text-amber-400 hover:text-amber-300">
                 privacy@MailCraftUs.com
               </a>
             </p>

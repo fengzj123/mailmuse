@@ -1,13 +1,40 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0f0f23;
+  /* New Color Scheme: Deep Blue + Warm Gold */
+  --background: #0a1628;
   --foreground: #ffffff;
+  --card: #0f2744;
+  --card-foreground: #ffffff;
+  --primary: #f5a623;
+  --primary-foreground: #0a1628;
+  --secondary: #1e3a5f;
+  --secondary-foreground: #ffffff;
+  --accent: #d4922a;
+  --accent-foreground: #ffffff;
+  --muted: #1e3a5f;
+  --muted-foreground: #94a3b8;
+  --border: #2d4a6f;
+  --input: #1e3a5f;
+  --ring: #f5a623;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -16,6 +43,11 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Selection color */
+::selection {
+  background: rgba(245, 166, 35, 0.3);
 }
 
 /* Custom scrollbar */
@@ -29,15 +61,16 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(245, 166, 35, 0.3);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(245, 166, 35, 0.5);
 }
 
-/* Selection color */
-::selection {
-  background: rgba(139, 92, 246, 0.3);
+/* Focus ring with gold color */
+*:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
 }

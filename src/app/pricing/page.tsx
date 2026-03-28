@@ -65,7 +65,7 @@ export default function PricingPage() {
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <a href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-yellow-500 flex items-center justify-center">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
@@ -92,7 +92,7 @@ export default function PricingPage() {
                   </a>
                   <a
                     href="/auth/signin"
-                    className="px-4 py-2 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full text-sm font-medium hover:from-violet-500 hover:to-purple-500 transition-all"
+                    className="px-4 py-2 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-full text-sm font-medium hover:from-amber-500 hover:to-yellow-500 transition-all"
                   >
                     Sign In
                   </a>
@@ -124,7 +124,7 @@ export default function PricingPage() {
                 onClick={() => setSelectedPlan('monthly')}
                 className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
                   selectedPlan === 'monthly'
-                    ? 'bg-violet-600 text-white'
+                    ? 'bg-amber-600 text-white'
                     : 'bg-white/5 text-gray-400 hover:bg-white/10'
                 }`}
               >
@@ -134,7 +134,7 @@ export default function PricingPage() {
                 onClick={() => setSelectedPlan('yearly')}
                 className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
                   selectedPlan === 'yearly'
-                    ? 'bg-violet-600 text-white'
+                    ? 'bg-amber-600 text-white'
                     : 'bg-white/5 text-gray-400 hover:bg-white/10'
                 }`}
               >
@@ -151,25 +151,25 @@ export default function PricingPage() {
               <div className="text-gray-500 mb-6">Forever free</div>
               <ul className="space-y-3 text-left mb-8">
                 <li className="flex items-center gap-3 text-gray-300">
-                  <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   Sign in to start
                 </li>
                 <li className="flex items-center gap-3 text-gray-300">
-                  <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   5 emails per day
                 </li>
                 <li className="flex items-center gap-3 text-gray-300">
-                  <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   All email scenarios
                 </li>
                 <li className="flex items-center gap-3 text-gray-300">
-                  <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   All tones & languages
@@ -184,11 +184,11 @@ export default function PricingPage() {
             </div>
 
             {/* Pro Plan */}
-            <div className="p-8 rounded-3xl bg-gradient-to-b from-violet-600/20 to-purple-600/20 border border-violet-500/30 relative">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-violet-600 to-purple-600 text-xs font-medium">
+            <div className="p-8 rounded-3xl bg-gradient-to-b from-amber-600/20 to-yellow-600/20 border border-amber-500/30 relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-amber-600 to-yellow-600 text-xs font-medium">
                 Recommended
               </div>
-              <div className="text-sm text-violet-400 mb-2">Pro</div>
+              <div className="text-sm text-amber-400 mb-2">Pro</div>
               <div className="flex items-baseline gap-1 mb-2">
                 <span className="text-4xl font-bold">
                   {isPro
@@ -206,25 +206,25 @@ export default function PricingPage() {
               </div>
               <ul className="space-y-3 text-left mb-8">
                 <li className="flex items-center gap-3 text-gray-300">
-                  <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   Everything in Free
                 </li>
                 <li className="flex items-center gap-3 text-gray-300">
-                  <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   <strong>Unlimited</strong> emails
                 </li>
                 <li className="flex items-center gap-3 text-gray-300">
-                  <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   Email history
                 </li>
                 <li className="flex items-center gap-3 text-gray-300">
-                  <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   Priority support
@@ -241,7 +241,7 @@ export default function PricingPage() {
                 <button
                   onClick={handleUpgrade}
                   disabled={loading}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all font-medium disabled:opacity-50"
+                  className="w-full py-3 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-yellow-500 transition-all font-medium disabled:opacity-50"
                 >
                   {loading ? 'Redirecting to PayPal...' : 'Upgrade to Pro'}
                 </button>
@@ -289,7 +289,7 @@ export default function PricingPage() {
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <a href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-yellow-500 flex items-center justify-center">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>

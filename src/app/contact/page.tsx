@@ -21,7 +21,7 @@ export default function ContactPage() {
           <div className="space-y-3 text-gray-400">
             <p>
               <span className="text-gray-300">Email:</span>{' '}
-              <a href="mailto:support@MailCraftUs.com" className="text-violet-400 hover:text-violet-300">
+              <a href="mailto:support@MailCraftUs.com" className="text-amber-400 hover:text-amber-300">
                 support@MailCraftUs.com
               </a>
             </p>

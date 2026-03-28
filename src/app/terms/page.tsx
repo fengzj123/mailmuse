@@ -82,7 +82,7 @@ export default function TermsPage() {
             <h2 className="text-xl font-semibold text-white mb-3">Contact Information</h2>
             <p>
               For questions about these Terms, please contact us at{' '}
-              <a href="mailto:legal@MailCraftUs.com" className="text-violet-400 hover:text-violet-300">
+              <a href="mailto:legal@MailCraftUs.com" className="text-amber-400 hover:text-amber-300">
                 legal@MailCraftUs.com
               </a>
             </p>

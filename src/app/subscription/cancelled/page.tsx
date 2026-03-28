@@ -27,7 +27,7 @@ export default function SubscriptionCancelled() {
         </p>
         <a
           href="/pricing"
-          className="inline-block px-6 py-3 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full font-medium hover:from-violet-500 hover:to-purple-500 transition-all"
+          className="inline-block px-6 py-3 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-full font-medium hover:from-amber-500 hover:to-yellow-500 transition-all"
         >
           Back to Pricing
         </a>

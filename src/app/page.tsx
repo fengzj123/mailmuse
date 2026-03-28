@@ -270,7 +270,7 @@ export default function Home() {
           <div className="max-w-6xl mx-auto px-6 py-4">
             <div className="flex items-center justify-between">
               <a href="/" className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-yellow-500 flex items-center justify-center">
                   <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
@@ -284,7 +284,7 @@ export default function Home() {
                 {!isPro && (
                   <a
                     href="/pricing"
-                    className="text-sm text-violet-400 hover:text-violet-300 transition-colors"
+                    className="text-sm text-amber-400 hover:text-amber-300 transition-colors"
                   >
                     Upgrade
                   </a>
@@ -308,7 +308,7 @@ export default function Home() {
                         className="w-8 h-8 rounded-full"
                       />
                     ) : (
-                      <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center text-white text-sm font-medium">
+                      <div className="w-8 h-8 rounded-full bg-amber-500 flex items-center justify-center text-white text-sm font-medium">
                         {session?.user?.name?.[0] || session?.user?.email?.[0] || 'U'}
                       </div>
                     )}
@@ -358,7 +358,7 @@ export default function Home() {
                     <select
                       value={scenario}
                       onChange={(e) => { setScenario(e.target.value); handleDemoModeExit(); persistFormData(); }}
-                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none appearance-none cursor-pointer"
+                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all outline-none appearance-none cursor-pointer"
                     >
                       {scenarios.map((s) => (
                         <option key={s.value} value={s.value} className="bg-[#1a1a2e]">
@@ -373,7 +373,7 @@ export default function Home() {
                     <select
                       value={tone}
                       onChange={(e) => { setTone(e.target.value); handleDemoModeExit(); persistFormData(); }}
-                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none appearance-none cursor-pointer"
+                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all outline-none appearance-none cursor-pointer"
                     >
                       {tones.map((t) => (
                         <option key={t.value} value={t.value} className="bg-[#1a1a2e]">
@@ -388,7 +388,7 @@ export default function Home() {
                     <select
                       value={language}
                       onChange={(e) => { setLanguage(e.target.value); handleDemoModeExit(); persistFormData(); }}
-                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none appearance-none cursor-pointer"
+                      className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all outline-none appearance-none cursor-pointer"
                     >
                       {languages.map((l) => (
                         <option key={l.value} value={l.value} className="bg-[#1a1a2e]">
@@ -407,7 +407,7 @@ export default function Home() {
                     value={recipientRole}
                     onChange={(e) => { setRecipientRole(e.target.value); handleDemoModeExit(); persistFormData(); }}
                     placeholder="e.g., Hiring Manager at Google"
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none placeholder:text-gray-500"
+                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all outline-none placeholder:text-gray-500"
                   />
                 </div>
 
@@ -421,7 +421,7 @@ export default function Home() {
                     onChange={(e) => { setSenderBackground(e.target.value); handleDemoModeExit(); persistFormData(); }}
                     placeholder="Briefly describe yourself or your company..."
                     rows={2}
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none placeholder:text-gray-500 resize-none"
+                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all outline-none placeholder:text-gray-500 resize-none"
                   />
                 </div>
 
@@ -433,7 +433,7 @@ export default function Home() {
                     onChange={(e) => { setEmailPurpose(e.target.value); handleDemoModeExit(); persistFormData(); }}
                     placeholder="What do you want to say? Include key points you want to cover..."
                     rows={3}
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none placeholder:text-gray-500 resize-none"
+                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all outline-none placeholder:text-gray-500 resize-none"
                   />
                 </div>
 
@@ -448,7 +448,7 @@ export default function Home() {
                 <button
                   onClick={handleGenerate}
                   disabled={isLoading}
-                  className="w-full py-4 px-6 bg-gradient-to-r from-violet-600 to-purple-600 rounded-xl font-semibold hover:from-violet-500 hover:to-purple-500 disabled:from-gray-600 disabled:to-gray-600 transition-all shadow-lg shadow-violet-500/25 flex items-center justify-center gap-2"
+                  className="w-full py-4 px-6 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-xl font-semibold hover:from-amber-500 hover:to-purple-500 disabled:from-gray-600 disabled:to-gray-600 transition-all shadow-lg shadow-amber-500/25 flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
                     <>
@@ -571,7 +571,7 @@ export default function Home() {
               <div className="space-y-3">
                 <a
                   href="/pricing"
-                  className="block w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all font-medium text-center"
+                  className="block w-full py-3 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-purple-500 transition-all font-medium text-center"
                 >
                   Upgrade to Pro - $9/month
                 </a>
@@ -606,7 +606,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <a href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-yellow-500 flex items-center justify-center">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
@@ -627,7 +627,7 @@ export default function Home() {
                     document.getElementById('generator')?.scrollIntoView({ behavior: 'smooth' });
                   }, 100);
                 }}
-                className="px-4 py-2 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full text-sm font-medium hover:from-violet-500 hover:to-purple-500 transition-all"
+                className="px-4 py-2 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-full text-sm font-medium hover:from-amber-500 hover:to-purple-500 transition-all"
               >
                 Get Started
               </button>
@@ -639,8 +639,8 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 px-6">
         {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-violet-600/10 via-transparent to-transparent" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-violet-600/20 rounded-full blur-[120px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-amber-600/10 via-transparent to-transparent" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-amber-600/20 rounded-full blur-[120px]" />
 
         <div className="relative max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 mb-8">
@@ -651,7 +651,7 @@ export default function Home() {
           <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
             Write Professional Emails
             <br />
-            <span className="text-violet-400">In Seconds</span>
+            <span className="text-amber-400">In Seconds</span>
           </h1>
 
           <p className="text-lg text-gray-400 max-w-2xl mx-auto mb-10">
@@ -666,7 +666,7 @@ export default function Home() {
                   document.getElementById('generator')?.scrollIntoView({ behavior: 'smooth' });
                 }, 100);
               }}
-              className="px-8 py-4 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full font-semibold hover:from-violet-500 hover:to-purple-500 transition-all shadow-lg shadow-violet-500/25"
+              className="px-8 py-4 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-full font-semibold hover:from-amber-500 hover:to-purple-500 transition-all shadow-lg shadow-amber-500/25"
             >
               Try It Free
             </button>
@@ -689,8 +689,8 @@ export default function Home() {
                 key={index}
                 className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all group"
               >
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500/20 to-purple-500/20 flex items-center justify-center mb-4 group-hover:from-violet-500/30 group-hover:to-purple-500/30 transition-all">
-                  <div className="text-violet-400">{feature.icon}</div>
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500/20 to-yellow-500/20 flex items-center justify-center mb-4 group-hover:from-amber-500/30 group-hover:to-purple-500/30 transition-all">
+                  <div className="text-amber-400">{feature.icon}</div>
                 </div>
                 <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
                 <p className="text-gray-400 text-sm">{feature.description}</p>
@@ -719,7 +719,7 @@ export default function Home() {
                   <select
                     value={scenario}
                     onChange={(e) => { setScenario(e.target.value); handleDemoModeExit(); persistFormData(); }}
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none appearance-none cursor-pointer"
+                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all outline-none appearance-none cursor-pointer"
                   >
                     {scenarios.map((s) => (
                       <option key={s.value} value={s.value} className="bg-[#1a1a2e]">
@@ -734,7 +734,7 @@ export default function Home() {
                   <select
                     value={tone}
                     onChange={(e) => { setTone(e.target.value); handleDemoModeExit(); persistFormData(); }}
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none appearance-none cursor-pointer"
+                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all outline-none appearance-none cursor-pointer"
                   >
                     {tones.map((t) => (
                       <option key={t.value} value={t.value} className="bg-[#1a1a2e]">
@@ -749,7 +749,7 @@ export default function Home() {
                   <select
                     value={language}
                     onChange={(e) => { setLanguage(e.target.value); handleDemoModeExit(); persistFormData(); }}
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none appearance-none cursor-pointer"
+                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all outline-none appearance-none cursor-pointer"
                   >
                     {languages.map((l) => (
                       <option key={l.value} value={l.value} className="bg-[#1a1a2e]">
@@ -768,7 +768,7 @@ export default function Home() {
                   value={recipientRole}
                   onChange={(e) => { setRecipientRole(e.target.value); handleDemoModeExit(); persistFormData(); }}
                   placeholder="e.g., Hiring Manager at Google"
-                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none placeholder:text-gray-500"
+                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all outline-none placeholder:text-gray-500"
                 />
               </div>
 
@@ -782,7 +782,7 @@ export default function Home() {
                   onChange={(e) => { setSenderBackground(e.target.value); handleDemoModeExit(); persistFormData(); }}
                   placeholder="Briefly describe yourself or your company..."
                   rows={2}
-                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none placeholder:text-gray-500 resize-none"
+                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all outline-none placeholder:text-gray-500 resize-none"
                 />
               </div>
 
@@ -794,7 +794,7 @@ export default function Home() {
                   onChange={(e) => { setEmailPurpose(e.target.value); handleDemoModeExit(); persistFormData(); }}
                   placeholder="What do you want to say? Include key points you want to cover..."
                   rows={3}
-                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none placeholder:text-gray-500 resize-none"
+                  className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all outline-none placeholder:text-gray-500 resize-none"
                 />
               </div>
 
@@ -809,7 +809,7 @@ export default function Home() {
               <button
                 onClick={handleGenerate}
                 disabled={isLoading}
-                className="w-full py-4 px-6 bg-gradient-to-r from-violet-600 to-purple-600 rounded-xl font-semibold hover:from-violet-500 hover:to-purple-500 disabled:from-gray-600 disabled:to-gray-600 transition-all shadow-lg shadow-violet-500/25 flex items-center justify-center gap-2"
+                className="w-full py-4 px-6 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-xl font-semibold hover:from-amber-500 hover:to-purple-500 disabled:from-gray-600 disabled:to-gray-600 transition-all shadow-lg shadow-amber-500/25 flex items-center justify-center gap-2"
               >
                 {isLoading ? (
                   <>
@@ -831,7 +831,7 @@ export default function Home() {
 
               {/* Usage Indicator */}
               <div className="flex items-center justify-center gap-2 mt-3 text-sm text-gray-400">
-                <span className="text-violet-400">
+                <span className="text-amber-400">
                   <a href="/auth/signin" className="hover:underline">Sign in</a> to start using
                 </span>
               </div>
@@ -923,19 +923,19 @@ export default function Home() {
               <div className="text-4xl font-bold mb-6">$0<span className="text-lg text-gray-400">/mo</span></div>
               <ul className="space-y-3 text-left mb-8">
                 <li className="flex items-center gap-3 text-gray-300">
-                  <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   5 emails per day
                 </li>
                 <li className="flex items-center gap-3 text-gray-300">
-                  <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   All scenarios
                 </li>
                 <li className="flex items-center gap-3 text-gray-300">
-                  <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   All tones
@@ -947,28 +947,28 @@ export default function Home() {
             </div>
 
             {/* Pro Plan */}
-            <div className="p-8 rounded-3xl bg-gradient-to-b from-violet-600/20 to-purple-600/20 border border-violet-500/30 relative">
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-violet-600 to-purple-600 text-xs font-medium">
+            <div className="p-8 rounded-3xl bg-gradient-to-b from-amber-600/20 to-yellow-600/20 border border-amber-500/30 relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-amber-600 to-yellow-600 text-xs font-medium">
                 Recommended
               </div>
-              <div className="text-sm text-violet-400 mb-2">Pro</div>
+              <div className="text-sm text-amber-400 mb-2">Pro</div>
               <div className="text-4xl font-bold mb-6">$9<span className="text-lg text-gray-400">/mo</span></div>
               <div className="text-sm text-gray-400 mb-6">or $99/year</div>
               <ul className="space-y-3 text-left mb-8">
                 <li className="flex items-center gap-3 text-gray-300">
-                  <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   Unlimited emails
                 </li>
                 <li className="flex items-center gap-3 text-gray-300">
-                  <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   Email history
                 </li>
                 <li className="flex items-center gap-3 text-gray-300">
-                  <svg className="w-5 h-5 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                   Priority support
@@ -976,7 +976,7 @@ export default function Home() {
               </ul>
               <a
                 href="/pricing"
-                className="block w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all font-medium text-center"
+                className="block w-full py-3 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-purple-500 transition-all font-medium text-center"
               >
                 Upgrade to Pro
               </a>
@@ -990,7 +990,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <a href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-yellow-500 flex items-center justify-center">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>

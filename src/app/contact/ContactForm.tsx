@@ -36,7 +36,7 @@ export default function ContactForm() {
           required
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
-          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none"
+          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all outline-none"
           placeholder="Your name"
         />
       </div>
@@ -48,7 +48,7 @@ export default function ContactForm() {
           required
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
-          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none"
+          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all outline-none"
           placeholder="you@example.com"
         />
       </div>
@@ -60,14 +60,14 @@ export default function ContactForm() {
           rows={5}
           value={form.message}
           onChange={(e) => setForm({ ...form, message: e.target.value })}
-          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 transition-all outline-none resize-none"
+          className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-all outline-none resize-none"
           placeholder="How can we help you?"
         />
       </div>
 
       <button
         type="submit"
-        className="w-full py-4 px-6 bg-gradient-to-r from-violet-600 to-purple-600 rounded-xl font-semibold hover:from-violet-500 hover:to-purple-500 transition-all"
+        className="w-full py-4 px-6 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-xl font-semibold hover:from-amber-500 hover:to-yellow-500 transition-all"
       >
         Send Message
       </button>

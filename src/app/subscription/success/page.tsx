@@ -35,7 +35,7 @@ export default function SubscriptionSuccess() {
         </p>
         <Link
           href="/"
-          className="inline-block px-8 py-3 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full font-medium hover:from-violet-500 hover:to-purple-500 transition-all mb-4"
+          className="inline-block px-8 py-3 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-full font-medium hover:from-amber-500 hover:to-yellow-500 transition-all mb-4"
         >
           Go to Generator
         </Link>

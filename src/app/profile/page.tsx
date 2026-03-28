@@ -53,7 +53,7 @@ export default function ProfilePage() {
           <p className="text-gray-400 mb-4">Please sign in to view your profile</p>
           <Link
             href="/auth/signin"
-            className="px-6 py-3 bg-gradient-to-r from-violet-600 to-purple-600 rounded-full font-medium hover:from-violet-500 hover:to-purple-500 transition-all"
+            className="px-6 py-3 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-full font-medium hover:from-amber-500 hover:to-purple-500 transition-all"
           >
             Sign In
           </Link>
@@ -79,7 +79,7 @@ export default function ProfilePage() {
         <div className="max-w-6xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-yellow-500 flex items-center justify-center">
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
@@ -122,7 +122,7 @@ export default function ProfilePage() {
                 className="w-20 h-20 rounded-full"
               />
             ) : (
-              <div className="w-20 h-20 rounded-full bg-violet-500 flex items-center justify-center text-white text-2xl font-bold">
+              <div className="w-20 h-20 rounded-full bg-amber-500 flex items-center justify-center text-white text-2xl font-bold">
                 {session?.user?.name?.[0] || session?.user?.email?.[0] || 'U'}
               </div>
             )}
@@ -169,7 +169,7 @@ export default function ProfilePage() {
           {!isPro && (
             <Link
               href="/pricing"
-              className="block w-full py-4 rounded-xl bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 transition-all font-medium text-center"
+              className="block w-full py-4 rounded-xl bg-gradient-to-r from-amber-600 to-yellow-600 hover:from-amber-500 hover:to-purple-500 transition-all font-medium text-center"
             >
               Upgrade to Pro
             </Link>
